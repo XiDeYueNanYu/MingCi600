@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <body style="background-color: #f7fbf3;">
+    <title>越南语听力练习</title>
+    <style>
+    body { 
+        font-family: Arial, sans-serif; 
+        text-align: center; 
+        margin: 0;
+        padding: 10px;
+    }
+    #gameContainer {
+        display: block;
+    }
+    #infoBox { 
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        min-height: 60px;
+        margin: 1px auto; 
+        border: 1px solid #ccc; 
+        background: #68838B; 
+        color: #D2B48C; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: clamp(20px, 6vw, 70px);
+        font-weight: bold;
+        padding: 10px;
+    }
+    #contactBox, #socialBox { 
+        width: 90%;
+        max-width: 750px;
+        height: auto;
+        min-height: 20px;
+        margin: 1px auto;
+        border: 1px solid #ccc; 
+        background: #68838B; 
+        color: #D2B48C; 
+        display: flex; 
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 3px;
+        font-size: clamp(14px, 3vw, 13px);
+        font-weight: bold;
+        text-align: left;
+    }
+    #shortcutBox { 
+        width: 90%;
+        max-width: 750px;
+        height: auto;
+        min-height: 30px;
+        margin: 1px auto;
+        border: 1px solid #ccc; 
+        background: #68838B; 
+        color: #D2B48C; 
+        display: flex; 
+        align-items: center; 
+        justify-content: left; 
+        padding-left: 10px;
+        font-size: clamp(10px, 2.5vw, 13px);
+        font-weight: bold;
+    }
+    #controls { 
+        margin: 15px 0; 
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+    button { 
+        padding: 8px 16px;
+        margin: 5px; 
+        cursor: pointer; 
+        border: 3px solid #89ACB7; 
+        background: #68838B; 
+        color: #E6E6FA; 
+        font-size: clamp(14px, 3.5vw, 20px);
+        border-radius: 5px; 
+        font-weight: bold;
+    }
+    #sentenceNumber { 
+        width: 60px; 
+        padding: 8px; 
+        text-align: center; 
+        border: 3px solid #68838B; 
+        background: #FFAD5B; 
+        color: #000; 
+        border-radius: 10px; 
+        font-size: clamp(14px, 4vw, 20px);
+        -moz-appearance: textfield; 
+    }
+    #sentenceNumber::-webkit-inner-spin-button, 
+    #sentenceNumber::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    #sentenceNumber:disabled { 
+        background: #eee; 
+    }
+    .disabled { 
+        cursor: not-allowed; 
+        pointer-events: none; 
+    }
+    .active-mode { 
+        border: 4px solid orange; 
+    }
+    #indicator { 
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        min-height: 60px;
+        margin: 10px auto; 
+        border: 3px solid #734A2E; 
+        background: #ffffe0; 
+        border-radius: 20px; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+    }
+    #answerInput { 
+        width: 90%;
+        max-width: 700px;
+        padding: 15px; 
+        margin: 10px 0; 
+        border: 3px solid #734A2E; 
+        background: #E6EDD9; 
+        color: #000; 
+        font-size: clamp(16px, 4vw, 30px);
+        outline: none;
+    }
+    #answerInput:focus {
+        border: 3px solid #734A2E;
+        outline: none;
+    }
+    #score { 
+        display: none; 
+        margin-left: 10px; 
+        color: #FF6820;
+        font-size: clamp(16px, 4vw, 30px);
+    }
+    #wrongSentences { 
+        display: none; 
+        width: 90%;
+        max-width: 700px;
+        margin: 10px auto; 
+        padding: 10px; 
+        border: 2px solid #CE6D5E; 
+        background: #FFF0F0; 
+        color: #CE6D5E; 
+        font-size: clamp(14px, 3.5vw, 20px);
+        text-align: left; 
+        border-radius: 5px;
+    }
+    @media (max-width: 600px) {
+        #infoBox {
+            font-size: clamp(18px, 5vw, 40px);
+        }
+        #contactBox, #shortcutBox, #socialBox {
+            font-size: clamp(12px, 2.5vw, 16px);
+        }
+        button {
+            padding: 6px 12px;
+        }
+        #sentenceNumber {
+            width: 35px;
+        }
+        #indicator {
+            border-width: 3px;
+            border-radius: 15px;
+        }
+        #answerInput {
+            padding: 10px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="infoBox">习得越南语 - 名词-600</div>
+        <div id="socialBox">关注我们 - 天天练习 - YouTube: <br>TikTok: <br>Facebook: <br></div>
+        <div id="contactBox">阮玉煌 | Weixin：XiDeYueNanYu</div>
+        <div id="shortcutBox">快键: Ctrl+F (再听一遍) | Ctrl+8 (上一题) | Ctrl+9 (下一题)</div>
+        <div id="controls">
+            <button id="autoPlayBtn">自动播放</button>
+            <button id="autoContinueBtn">自动继续</button>
+            <button id="showHideBtn">显示-隐藏</button>
+            <button id="prevBtn">◀</button>
+            <input type="text" id="sentenceNumber" inputmode="numeric" pattern="[0-9]*">
+            <button id="nextBtn">▶</button>
+            <button id="replayBtn">再听一遍</button>
+            <button id="freeModeBtn" class="active-mode">自由模式</button>
+            <button id="testModeBtn">作业模式</button>
+            <span id="score">0/0</span>
+        </div>
+        <div id="indicator"></div>
+        <input type="text" id="answerInput" placeholder="输入所听到的内容">
+        <div id="wrongSentences"></div>
+    </div>
+    <audio id="mainAudio" preload="auto"></audio>
+    <audio id="correctAudio" src="Dung.mp3"></audio>
+    <audio id="wrongAudio" src="Sai.mp3"></audio>
+
+    <script>
+    async function fetchCompletedCount() {
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec');
+            const data = await response.json();
+            return data.completedCount;
+        } catch (error) {
+            console.error('Lỗi khi tải số đếm:', error);
+            return 0;
+        }
+    }
+
+    async function incrementCompletedCount() {
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec', {
+                method: 'POST'
+            });
+            const data = await response.json();
+            return data.completedCount;
+        } catch (error) {
+            console.error('Lỗi khi tăng số đếm:', error);
+            return 0;
+        }
+    }
+
+    const audio = document.getElementById('mainAudio');
+    const correctAudio = document.getElementById('correctAudio');
+    const wrongAudio = document.getElementById('wrongAudio');
+    const answerInput = document.getElementById('answerInput');
+    const indicator = document.getElementById('indicator');
+    const sentenceNumber = document.getElementById('sentenceNumber');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const replayBtn = document.getElementById('replayBtn');
+    const freeModeBtn = document.getElementById('freeModeBtn');
+    const testModeBtn = document.getElementById('testModeBtn');
+    const autoContinueBtn = document.getElementById('autoContinueBtn');
+    const showHideBtn = document.getElementById('showHideBtn');
+    const autoPlayBtn = document.getElementById('autoPlayBtn');
+    const scoreDisplay = document.getElementById('score');
+    const wrongSentencesDisplay = document.getElementById('wrongSentences');
+
+    const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn, autoPlayBtn];
+    const otherButtons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn]; // Không bao gồm autoPlayBtn
+
+    const sentences = [
+        { start: 0, end: 3.089802, text: "Gia đình tôi sống trong một ngôi nhà nhỏ nhưng ấm cúng.", text2: "我们家住在一个虽小但温暖的房子里。", text3: "Nhà  - 房子", audioFile: "1-100.mp3" },
+{ start: 3.388128, end: 6.541858, text: "Anh ấy có rất nhiều công việc phải hoàn thành trong tuần này.", text2: "这周他有很多工作要完成。", text3: "Công việc  - 工作", audioFile: "1-100.mp3" },
+{ start: 6.818874, end: 10.420092, text: "Trường học của tôi rất gần nhà, chỉ mất 10 phút đi bộ.", text2: "我的学校离我家很近，只需步行10分钟。", text3: "Trường học  - 学校", audioFile: "1-100.mp3" },
+{ start: 10.654491, end: 13.552513, text: "Cô ấy là một giáo viên dạy toán với nhiều kinh nghiệm.", text2: "她是一位经验丰富的数学教师。", text3: "Giáo viên  - 教师", audioFile: "1-100.mp3" },
+{ start: 13.850839, end: 17.281585, text: "Các học sinh đều rất chăm chỉ và cố gắng học tập.", text2: "学生们都很认真努力学习。", text3: "Học sinh  - 学生", audioFile: "1-100.mp3" },
+{ start: 17.515984, end: 20.52055, text: "Tôi để sách và máy tính trên bàn làm việc của mình.", text2: "我把书和电脑放在我的书桌上。", text3: "Bàn  - 桌子", audioFile: "1-100.mp3" },
+{ start: 20.776258, end: 24.420094, text: "Chiếc ghế này rất thoải mái và tôi thích ngồi trên đó đọc sách.", text2: "这把椅子非常舒适，我喜欢坐在上面读书。", text3: "Ghế  - 椅子", audioFile: "1-100.mp3" },
+{ start: 24.654493, end: 27.105026, text: "Căn phòng sáng sủa nhờ có cửa sổ lớn.", text2: "房间因为有大窗户而非常明亮。", text3: "Cửa sổ  - 窗户", audioFile: "1-100.mp3" },
+{ start: 27.424661, end: 30.045665, text: "Anh ấy đứng chờ ở cửa ra vào của nhà hàng.", text2: "他在餐厅的门口等待。", text3: "Cửa ra vào  - 门口", audioFile: "1-100.mp3" },
+{ start: 30.493154, end: 33.689501, text: "Tôi thường sử dụng máy tính để làm việc và giải trí.", text2: "我经常用电脑工作和娱乐。", text3: "Máy tính  - 电脑", audioFile: "1-100.mp3" },
+{ start: 33.966518, end: 37.056321, text: "Điện thoại của tôi vừa hết pin nên tôi cần sạc.", text2: "我的手机没电了，我需要充电。", text3: "Điện thoại  - 电话", audioFile: "1-100.mp3" },
+{ start: 37.375955, end: 40.572303, text: "Cô ấy thích đọc sách vào mỗi buổi tối trước khi đi ngủ.", text2: "她喜欢在睡觉前每晚读书。", text3: "Sách  - 书", audioFile: "1-100.mp3" },
+{ start: 40.764084, end: 44.045667, text: "Tôi ghi chép lại các bài học vào vở để dễ dàng ôn tập.", text2: "我把课程记在笔记本上以便复习。", text3: "Vở  - 笔记本", audioFile: "1-100.mp3" },
+{ start: 44.343993, end: 47.646885, text: "Anh ấy luôn mang theo bút để ghi chép những ý tưởng mới.", text2: "他总是带着笔来记录新的想法。", text3: "Bút  - 笔", audioFile: "1-100.mp3" },
+{ start: 47.838666, end: 50.779305, text: "Xe máy là phương tiện phổ biến ở Việt Nam.", text2: "摩托车是越南常见的交通工具。", text3: "Xe máy  - 摩托车", audioFile: "1-100.mp3" },
+{ start: 51.09894, end: 53.869108, text: "Cô ấy đi xe đạp mỗi sáng để rèn luyện sức khỏe.", text2: "她每天早晨骑自行车锻炼。", text3: "Xe đạp  - 自行车", audioFile: "1-100.mp3" },
+{ start: 54.210052, end: 57.38509, text: "Ông ấy vừa mua một chiếc xe ô tô mới tuần trước.", text2: "上周他刚买了一辆新车。", text3: "Xe ô tô  - 汽车", audioFile: "1-100.mp3" },
+{ start: 57.640798, end: 60.389657, text: "Tôi thường đi chợ mỗi sáng để mua thực phẩm tươi.", text2: "我每天早晨都会去市场买新鲜的食物。", text3: "Chợ  - 市场", audioFile: "1-100.mp3" },
+{ start: 60.837145, end: 64.054802, text: "Siêu thị này có đầy đủ các mặt hàng gia dụng cần thiết.", text2: "这家超市有所有必需的家庭用品。", text3: "Siêu thị  - 超市", audioFile: "1-100.mp3" },
+{ start: 64.417054, end: 67.293767, text: "Bệnh viện này nổi tiếng với đội ngũ y bác sĩ giỏi.", text2: "这家医院以其优秀的医生团队而闻名。", text3: "Bệnh viện  - 医院", audioFile: "1-100.mp3" },
+{ start: 67.719947, end: 70.426187, text: "Tôi đã đến nhà thuốc để mua thuốc cảm cúm.", text2: "我去了药店买感冒药。", text3: "Nhà thuốc  - 药店", audioFile: "1-100.mp3" },
+{ start: 70.639277, end: 73.750389, text: "Tiền không thể mua được hạnh phúc nhưng rất cần thiết.", text2: "钱不能买到幸福，但它是必需的。", text3: "Tiền  - 钱", audioFile: "1-100.mp3" },
+{ start: 73.750389, end: 76.712337, text: "Tôi đã đến ngân hàng để gửi tiền vào tài khoản.", text2: "我去了银行把钱存入账户。", text3: "Ngân hàng  - 银行", audioFile: "1-100.mp3" },
+{ start: 76.712337, end: 80.143083, text: "Nhân viên của công ty này rất thân thiện và nhiệt tình.", text2: "这家公司的员工非常友善和热情。", text3: "Nhân viên  - 员工", audioFile: "1-100.mp3" },
+{ start: 80.143083, end: 83.688726, text: "Giám đốc công ty đã tổ chức một cuộc họp quan trọng.", text2: "公司经理组织了一次重要的会议。", text3: "Giám đốc  - 经理", audioFile: "1-100.mp3" },
+{ start: 83.688726, end: 87.651989, text: "Thư ký của giám đốc luôn sắp xếp lịch làm việc rất hợp lý.", text2: "经理的秘书总是安排得非常合理。", text3: "Thư ký  - 秘书", audioFile: "1-100.mp3" },
+{ start: 87.651989, end: 90.82359, text: "Khách hàng luôn là ưu tiên hàng đầu của doanh nghiệp.", text2: "客户始终是企业的首要任务。", text3: "Khách hàng  - 客户", audioFile: "1-100.mp3" },
+{ start: 90.82359, end: 94.65818, text: "Sản phẩm mới của công ty nhận được nhiều phản hồi tích cực.", text2: "公司的新产品收到了很多积极的反馈。", text3: "Sản phẩm  - 产品", audioFile: "1-100.mp3" },
+{ start: 94.65818, end: 97.632676, text: "Hợp đồng đã được ký kết sau nhiều lần đàm phán.", text2: "经过多次谈判，合同终于签署。", text3: "Hợp đồng  - 合同", audioFile: "1-100.mp3" },
+{ start: 97.632676, end: 100.953657, text: "Dịch vụ khách hàng của công ty này rất chuyên nghiệp.", text2: "这家公司的客户服务非常专业。", text3: "Dịch vụ  - 服务", audioFile: "1-100.mp3" },
+{ start: 100.953657, end: 103.713129, text: "Giá cả hàng hóa tăng lên do lạm phát.", text2: "由于通货膨胀，商品价格上涨。", text3: "Giá cả  - 价格", audioFile: "1-100.mp3" },
+{ start: 103.713129, end: 107.01016, text: "Thị trường bất động sản hiện đang có nhiều biến động.", text2: "目前房地产市场正在经历很多波动。", text3: "Thị trường  - 市场", audioFile: "1-100.mp3" },
+{ start: 107.01016, end: 110.629727, text: "Hoạt động mua bán ở chợ này rất nhộn nhịp vào buổi sáng.", text2: "这个市场的买卖活动在早晨非常繁忙。", text3: "Mua bán  - 买卖", audioFile: "1-100.mp3" },
+{ start: 110.629727, end: 114.518073, text: "Anh ấy vừa hoàn thành xong báo cáo tài chính cho dự án.", text2: "他刚刚完成了项目的财务报告。", text3: "Báo cáo  - 报告", audioFile: "1-100.mp3" },
+{ start: 114.518073, end: 117.958453, text: "Chúng tôi đang lập kế hoạch cho kỳ nghỉ hè năm nay.", text2: "我们正在制定今年暑假的计划。", text3: "Kế hoạch  - 计划", audioFile: "1-100.mp3" },
+{ start: 117.958453, end: 122.258929, text: "Cuộc họp kéo dài suốt cả buổi chiều để thảo luận các vấn đề quan trọng.", text2: "会议持续了整个下午以讨论重要问题。", text3: "Cuộc họp  - 会议", audioFile: "1-100.mp3" },
+{ start: 122.258929, end: 125.107994, text: "Tôi có cuộc hẹn với bác sĩ vào chiều mai.", text2: "我明天下午有个医生的约会。", text3: "Cuộc hẹn  - 约会", audioFile: "1-100.mp3" },
+{ start: 125.107994, end: 128.566292, text: "Cô ấy nhận được một cuộc điện thoại quan trọng từ đối tác.", text2: "她接到了一个来自合作伙伴的重要电话。", text3: "Cuộc điện thoại  - 电话", audioFile: "1-100.mp3" },
+{ start: 128.566292, end: 132.167941, text: "Tôi thường xem tin tức buổi sáng để cập nhật thông tin.", text2: "我通常在早上看新闻以获取最新信息。", text3: "Tin tức  - 新闻", audioFile: "1-100.mp3" },
+{ start: 132.167941, end: 135.895019, text: "Truyền hình là một phương tiện giải trí phổ biến trong gia đình.", text2: "电视是家庭中一种常见的娱乐方式。", text3: "Truyền hình  - 电视", audioFile: "1-100.mp3" },
+{ start: 135.895019, end: 140.195494, text: "Báo chí giúp cung cấp thông tin cập nhật và phân tích các sự kiện.", text2: "报纸提供了最新的信息和事件分析。", text3: "Báo chí  - 报纸", audioFile: "1-100.mp3" },
+{ start: 140.195494, end: 144.388458, text: "Tôi thích nghe radio mỗi sáng để cập nhật tin tức và âm nhạc.", text2: "我喜欢每天早晨听收音机，以获取新闻和音乐。", text3: "Radio  - 收音机", audioFile: "1-100.mp3" },
+{ start: 144.388458, end: 147.452546, text: "Cô ấy thích xem phim lãng mạn vào cuối tuần.", text2: "她喜欢在周末看浪漫电影。", text3: "Phim  - 电影", audioFile: "1-100.mp3" },
+{ start: 147.452546, end: 150.946683, text: "Bài hát này rất nổi tiếng và được nhiều người yêu thích.", text2: "这首歌曲非常受欢迎，受到很多人的喜爱。", text3: "Bài hát  - 歌曲", audioFile: "1-100.mp3" },
+{ start: 150.946683, end: 154.763354, text: "Nghệ sĩ biểu diễn đã mang lại một màn trình diễn ấn tượng.", text2: "艺术家的表演带来了令人印象深刻的演出。", text3: "Nghệ sĩ  - 艺术家", audioFile: "1-100.mp3" },
+{ start: 154.763354, end: 158.311247, text: "Ca sĩ này có giọng hát tuyệt vời và rất nổi tiếng.", text2: "这位歌手的嗓音非常好，且非常有名。", text3: "Ca sĩ  - 歌手", audioFile: "1-100.mp3" },
+{ start: 158.311247, end: 162.755071, text: "Diễn viên đã nhập vai rất tốt và thể hiện được cảm xúc của nhân vật.", text2: "演员很好地扮演了角色，表达了角色的情感。", text3: "Diễn viên  - 演员", audioFile: "1-100.mp3" },
+{ start: 162.755071, end: 166.105858, text: "Sân khấu được trang trí đẹp mắt cho buổi diễn ca nhạc.", text2: "舞台为音乐演出装饰得非常漂亮。", text3: "Sân khấu  - 舞台", audioFile: "1-100.mp3" },
+{ start: 166.105858, end: 169.52832, text: "Tôi đã mua vé xem phim cho cả gia đình vào cuối tuần này.", text2: "我买了这个周末的电影票给全家人。", text3: "Vé  - 票", audioFile: "1-100.mp3" },
+{ start: 169.52832, end: 173.775039, text: "Anh ấy đã chuẩn bị một món quà tặng đặc biệt cho sinh nhật của cô ấy.", text2: "他为她的生日准备了一份特别的礼物。", text3: "Quà tặng  - 礼物", audioFile: "1-100.mp3" },
+{ start: 173.775039, end: 177.609629, text: "Chúng tôi tổ chức một bữa tiệc sinh nhật ấm cúng cho cô ấy.", text2: "我们为她举办了一场温馨的生日派对。", text3: "Sinh nhật  - 生日", audioFile: "1-100.mp3" },
+{ start: 177.609629, end: 181.139603, text: "Ngày lễ là dịp để mọi người nghỉ ngơi và vui chơi.", text2: "节日是人们休息和娱乐的时机。", text3: "Ngày lễ  - 节日", audioFile: "1-100.mp3" },
+{ start: 181.139603, end: 184.777088, text: "Ngày Tết là dịp sum họp gia đình và chúc Tết người thân.", text2: "春节是家庭团聚和拜年的时刻。", text3: "Ngày Tết  - 春节", audioFile: "1-100.mp3" },
+{ start: 184.777088, end: 188.59376, text: "Thời gian trôi qua rất nhanh, hãy trân trọng từng khoảnh khắc.", text2: "时间过得很快，请珍惜每一刻。", text3: "Thời gian  - 时间", audioFile: "1-100.mp3" },
+{ start: 188.59376, end: 191.729523, text: "Tôi thích dậy sớm vào buổi sáng để tập thể dục.", text2: "我喜欢早晨早起锻炼身体。", text3: "Buổi sáng  - 早晨", audioFile: "1-100.mp3" },
+{ start: 191.729523, end: 195.707463, text: "Buổi chiều là khoảng thời gian tôi thường ngồi làm việc trong văn phòng.", text2: "下午是我通常在办公室工作的时间。", text3: "Buổi chiều  - 下午", audioFile: "1-100.mp3" },
+{ start: 195.707463, end: 200.043775, text: "Buổi tối, tôi thường thư giãn bằng cách xem phim hoặc đọc sách.", text2: "晚上，我通常通过看电影或读书来放松。", text3: "Buổi tối  - 晚上", audioFile: "1-100.mp3" },
+{ start: 200.043775, end: 203.932122, text: "Đêm khuya là lúc tôi cảm thấy tĩnh lặng và yên bình nhất.", text2: "夜晚是我感到最安静和平静的时候。", text3: "Đêm  - 夜晚", audioFile: "1-100.mp3" },
+{ start: 203.932122, end: 207.247072, text: "Giấc ngủ đủ và ngon giấc rất quan trọng cho sức khỏe.", text2: "充足的睡眠对健康非常重要。", text3: "Giấc ngủ  - 睡眠", audioFile: "1-100.mp3" },
+{ start: 207.247072, end: 211.422116, text: "Bữa ăn gia đình là thời gian quan trọng để mọi người quây quần bên nhau.", text2: "家庭餐是大家团聚的宝贵时间。", text3: "Bữa ăn  - 餐", audioFile: "1-100.mp3" },
+{ start: 211.422116, end: 214.575798, text: "Bữa sáng là bữa ăn quan trọng nhất trong ngày.", text2: "早餐是一天中最重要的一餐。", text3: "Bữa sáng  - 早餐", audioFile: "1-100.mp3" },
+{ start: 214.575798, end: 217.711561, text: "Chúng tôi thường ăn bữa trưa tại nhà hàng gần công ty.", text2: "我们通常在公司附近的餐馆吃午餐。", text3: "Bữa trưa  - 午餐", audioFile: "1-100.mp3" },
+{ start: 217.711561, end: 222.334572, text: "Bữa tối là lúc gia đình quây quần và chia sẻ những câu chuyện trong ngày.", text2: "晚餐是家人团聚并分享当天故事的时候。", text3: "Bữa tối  - 晚餐", audioFile: "1-100.mp3" },
+{ start: 222.334572, end: 225.040288, text: "Thức ăn ở đây rất ngon và đa dạng.", text2: "这里的食物非常美味多样。", text3: "Thức ăn  - 食物", audioFile: "1-100.mp3" },
+{ start: 225.040288, end: 228.104377, text: "Nhà hàng này có nhiều loại đồ uống hấp dẫn.", text2: "这家餐厅有很多吸引人的饮料。", text3: "Đồ uống  - 饮料", audioFile: "1-100.mp3" },
+{ start: 228.104377, end: 230.84593, text: "Trái cây tươi rất tốt cho sức khỏe.", text2: "新鲜水果对健康非常有益。", text3: "Trái cây  - 水果", audioFile: "1-100.mp3" },
+{ start: 230.84593, end: 233.694995, text: "Rau củ tươi ngon giúp bữa ăn thêm bổ dưỡng.", text2: "新鲜蔬菜使餐点更加营养。", text3: "Rau củ  - 蔬菜", audioFile: "1-100.mp3" },
+{ start: 233.694995, end: 237.404155, text: "Thịt bò là một nguồn cung cấp protein quan trọng.", text2: "牛肉是重要的蛋白质来源。", text3: "Thịt  - 肉", audioFile: "1-100.mp3" },
+{ start: 237.404155, end: 240.898291, text: "Cá có nhiều omega-3, rất tốt cho tim mạch.", text2: "鱼富含omega-3，对心脏有益。", text3: "Cá  - 鱼", audioFile: "1-100.mp3" },
+{ start: 240.898291, end: 243.460657, text: "Tôi thích ăn mì xào vào buổi sáng.", text2: "我喜欢在早晨吃炒面。", text3: "Mì  - 面条", audioFile: "1-100.mp3" },
+{ start: 243.460657, end: 246.972712, text: "Cơm là món ăn không thể thiếu trong bữa ăn của người Việt.", text2: "米饭是越南人餐桌上不可或缺的食物。", text3: "Cơm  - 米饭", audioFile: "1-100.mp3" },
+{ start: 246.972712, end: 250.126394, text: "Bánh sinh nhật là món quà tuyệt vời cho mọi dịp.", text2: "生日蛋糕是任何场合的美好礼物。", text3: "Bánh  - 蛋糕", audioFile: "1-100.mp3" },
+{ start: 250.126394, end: 253.781798, text: "Nước là nguồn sống, hãy uống đủ nước mỗi ngày.", text2: "水是生命之源，请每天喝足够的水。", text3: "Nước  - 水", audioFile: "1-100.mp3" },
+{ start: 253.781798, end: 257.455121, text: "Cà phê buổi sáng giúp tôi tỉnh táo để bắt đầu ngày mới.", text2: "早晨的咖啡帮助我清醒，开始新的一天。", text3: "Cà phê  - 咖啡", audioFile: "1-100.mp3" },
+{ start: 257.455121, end: 261.397223, text: "Trà xanh rất tốt cho sức khỏe và giúp giảm căng thẳng.", text2: "绿茶对健康有益，且有助于减轻压力。", text3: "Trà  - 茶", audioFile: "1-100.mp3" },
+{ start: 261.397223, end: 264.963034, text: "Nước ngọt có ga là loại đồ uống yêu thích của trẻ em.", text2: "汽水是孩子们喜爱的饮料。", text3: "Nước ngọt  - 汽水", audioFile: "1-100.mp3" },
+{ start: 264.963034, end: 269.78315, text: "Một ly rượu vang đỏ có thể giúp thư giãn sau một ngày làm việc căng thẳng.", text2: "一杯红酒可以在紧张的一天后帮助放松。", text3: "Rượu  - 酒", audioFile: "1-100.mp3" },
+{ start: 269.78315, end: 273.994032, text: "Bia là thức uống phổ biến trong các buổi tụ họp bạn bè.", text2: "啤酒是朋友聚会中常见的饮料。", text3: "Bia  - 啤酒", audioFile: "1-100.mp3" },
+{ start: 273.994032, end: 277.380656, text: "Gia đình là nơi tràn đầy yêu thương và sự chia sẻ.", text2: "家庭是充满爱与分享的地方。", text3: "Gia đình  - 家庭", audioFile: "1-100.mp3" },
+{ start: 277.380656, end: 281.358596, text: "Bố là người luôn dạy tôi những bài học quý giá trong cuộc sống.", text2: "父亲总是教我生活中宝贵的经验。", text3: "Bố  - 父亲", audioFile: "1-100.mp3" },
+{ start: 281.358596, end: 284.852732, text: "Mẹ luôn chăm sóc và yêu thương tôi vô điều kiện.", text2: "母亲总是无条件地照顾和爱我。", text3: "Mẹ  - 母亲", audioFile: "1-100.mp3" },
+{ start: 284.852732, end: 288.633566, text: "Anh là người luôn bảo vệ và hướng dẫn tôi trong cuộc sống.", text2: "哥哥是生活中一直保护和指导我的人。", text3: "Anh  - 哥哥", audioFile: "1-100.mp3" },
+{ start: 288.633566, end: 293.166984, text: "Chị thường giúp tôi làm bài tập về nhà và chia sẻ mọi điều trong cuộc sống.", text2: "姐姐经常帮我做作业，并分享生活中的一切。", text3: "Chị  - 姐姐", audioFile: "1-100.mp3" },
+{ start: 293.166984, end: 296.858225, text: "Em là niềm vui của gia đình và luôn mang lại tiếng cười.", text2: "弟弟/妹妹是家庭的快乐源泉，总是带来笑声。", text3: "Em  - 弟弟/妹妹", audioFile: "1-100.mp3" },
+{ start: 296.858225, end: 300.137338, text: "Con là niềm tự hào lớn nhất của cha mẹ.", text2: "孩子是父母最大的骄傲。", text3: "Con  - 孩子", audioFile: "1-100.mp3" },
+{ start: 300.137338, end: 303.631474, text: "Ông thường kể cho tôi nghe những câu chuyện cổ tích thú vị.", text2: "爷爷经常给我讲有趣的童话故事。", text3: "Ông  - 爷爷", audioFile: "1-100.mp3" },
+{ start: 303.631474, end: 307.053936, text: "Bà là người nấu những món ăn ngon nhất cho gia đình.", text2: "奶奶是为家人做最好吃的菜的人。", text3: "Bà  - 奶奶", audioFile: "1-100.mp3" },
+{ start: 307.053936, end: 310.028431, text: "Cháu rất kính trọng và yêu thương ông bà.", text2: "孙子/孙女非常尊敬和爱戴祖父母。", text3: "Cháu  - 孙子/孙女", audioFile: "1-100.mp3" },
+{ start: 310.028431, end: 313.343381, text: "Bác luôn hỗ trợ và giúp đỡ gia đình tôi khi cần thiết.", text2: "伯父/伯母总是在需要时帮助我们家。", text3: "Bác  - 伯父/伯母", audioFile: "1-100.mp3" },
+{ start: 313.343381, end: 316.676249, text: "Cô là người thân thiết và luôn quan tâm đến tôi.", text2: "姑姑是关心我并与我亲近的人。", text3: "Cô  - 姑姑", audioFile: "1-100.mp3" },
+{ start: 316.676249, end: 320.170385, text: "Chú thường dẫn tôi đi chơi và dạy tôi nhiều điều mới mẻ.", text2: "叔叔常常带我出去玩，教我很多新事物。", text3: "Chú  - 叔叔", audioFile: "1-100.mp3" },
+{ start: 320.170385, end: 324.417104, text: "Bạn bè là những người luôn chia sẻ niềm vui và nỗi buồn cùng tôi.", text2: "朋友是那些与我分享快乐和悲伤的人。", text3: "Bạn bè  - 朋友", audioFile: "1-100.mp3" },
+{ start: 324.417104, end: 328.735498, text: "Đồng nghiệp của tôi rất thân thiện và chúng tôi hợp tác tốt với nhau.", text2: "我的同事非常友好，我们合作得很好。", text3: "Đồng nghiệp  - 同事", audioFile: "1-100.mp3" },
+{ start: 328.735498, end: 332.838869, text: "Hàng xóm của tôi là những người dễ mến và luôn giúp đỡ khi cần.", text2: "我的邻居们很友善，总是在需要时帮助我。", text3: "Hàng xóm  - 邻居", audioFile: "1-100.mp3" },
+{ start: 332.838869, end: 336.852646, text: "Người yêu của tôi luôn hiểu và ủng hộ mọi quyết định của tôi.", text2: "我的爱人总是理解并支持我的每个决定。", text3: "Người yêu  - 爱人", audioFile: "1-100.mp3" },
+{ start: 336.852646, end: 340.812667, text: "Chồng của cô ấy là người rất chu đáo và biết chăm sóc gia đình.", text2: "她的丈夫非常体贴，懂得照顾家庭。", text3: "Chồng  - 丈夫", audioFile: "1-100.mp3" },
+{ start: 340.812667, end: 344.34264, text: "Vợ anh ấy là một người phụ nữ đảm đang và thông minh.", text2: "他的妻子是一位能干又聪明的女人。", text3: "Vợ  - 妻子", audioFile: "1-100.mp3" },
+{ start: 344.34264, end: 347.765102, text: "Con cái là món quà quý giá nhất mà cuộc đời ban tặng.", text2: "子女是生活中最珍贵的礼物。", text3: "Con cái  - 子女", audioFile: "1-100.mp3" },
+{ start: 347.765102, end: 351.133807, text: "Bạn gái của anh ấy rất xinh đẹp và thân thiện.", text2: "他的女朋友非常漂亮和友好。", text3: "Bạn gái  - 女朋友", audioFile: "1-100.mp3" },
+{ start: 351.133807, end: 354.681699, text: "Bạn trai của cô ấy là một người rất hài hước và dễ gần.", text2: "她的男朋友非常幽默且易接近。", text3: "Bạn trai  - 男朋友", audioFile: "1-100.mp3" },
+{ start: 0, end: 3.463485, text: "Trẻ em cần được yêu thương và giáo dục đúng đắn từ nhỏ.", text2: "儿童需要从小就受到正确的爱护和教育。", text3: "Trẻ em  - 儿童", audioFile: "101-200.mp3" },
+{ start: 3.463485, end: 6.974742, text: "Người lớn có trách nhiệm chăm sóc và bảo vệ trẻ em.", text2: "成人有责任照顾和保护儿童。", text3: "Người lớn  - 成人", audioFile: "101-200.mp3" },
+{ start: 6.974742, end: 11.083152, text: "Người già thường cần được chăm sóc đặc biệt và quan tâm hơn.", text2: "老人通常需要更多的特别照顾和关注。", text3: "Người già  - 老人", audioFile: "101-200.mp3" },
+{ start: 11.083152, end: 14.737726, text: "Bạn thân là người luôn bên cạnh tôi dù trong hoàn cảnh nào.", text2: "好朋友是无论何种情况都会陪伴在我身边的人。", text3: "Bạn thân  - 好朋友", audioFile: "101-200.mp3" },
+{ start: 14.737726, end: 18.631161, text: "Tình bạn chân thành là điều quý giá mà ai cũng nên trân trọng.", text2: "真诚的友谊是每个人都应该珍惜的宝贵财富。", text3: "Tình bạn  - 友谊", audioFile: "101-200.mp3" },
+{ start: 18.631161, end: 22.405165, text: "Tình yêu là nguồn cảm hứng bất tận cho nghệ thuật và văn học.", text2: "爱情是艺术和文学的无尽灵感来源。", text3: "Tình yêu  - 爱情", audioFile: "101-200.mp3" },
+{ start: 22.405165, end: 25.558131, text: "Tình cảm gia đình là điều mà mỗi người cần phải giữ gìn.", text2: "家庭感情是每个人都应该珍惜的东西。", text3: "Tình cảm  - 感情", audioFile: "101-200.mp3" },
+{ start: 25.558131, end: 29.499338, text: "Con người có rất nhiều cảm xúc, từ vui mừng đến buồn bã.", text2: "人类有许多情感，从喜悦到悲伤。", text3: "Cảm xúc  - 情感", audioFile: "101-200.mp3" },
+{ start: 29.499338, end: 33.297228, text: "Niềm vui đến từ những điều đơn giản trong cuộc sống hàng ngày.", text2: "快乐来自日常生活中的简单事物。", text3: "Niềm vui  - 快乐", audioFile: "101-200.mp3" },
+{ start: 33.297228, end: 36.665169, text: "Nỗi buồn là một phần không thể thiếu của cuộc sống.", text2: "悲伤是生活中不可或缺的一部分。", text3: "Nỗi buồn  - 悲伤", audioFile: "101-200.mp3" },
+{ start: 36.665169, end: 40.940781, text: "Sự lo lắng thường đến khi chúng ta phải đối mặt với điều gì đó chưa biết.", text2: "当我们面临未知的事物时，焦虑感常", text3: "Sự lo lắng  - 焦虑", audioFile: "101-200.mp3" },
+{ start: 40.940781, end: 45.120849, text: "Sự lo lắng thường đến khi chúng ta phải đối mặt với điều gì đó chưa biết.", text2: "当我们面临未知的事物时，焦虑感常常会出现。", text3: "Sự lo lắng  - 焦虑", audioFile: "101-200.mp3" },
+{ start: 45.120849, end: 50.113045, text: "Sự tức giận có thể làm mất kiểm soát và gây ra những hành động không mong muốn.", text2: "愤怒可能会使人失去控制，并导致不良行为。", text3: "Sự tức giận  - 愤怒", audioFile: "101-200.mp3" },
+{ start: 50.113045, end: 54.293113, text: "Sự hạnh phúc đến từ việc biết ơn những điều nhỏ nhặt trong cuộc sống.", text2: "幸福来自对生活中小事的感恩。", text3: "Sự hạnh phúc  - 幸福", audioFile: "101-200.mp3" },
+{ start: 54.293113, end: 58.377637, text: "Sự đau khổ thường là bài học quý giá giúp chúng ta trưởng thành hơn.", text2: "痛苦往往是让我们成长的重要教训。", text3: "Sự đau khổ  - 痛苦", audioFile: "101-200.mp3" },
+{ start: 58.377637, end: 62.366616, text: "Hy vọng là điều giữ chúng ta kiên cường trong những thời điểm khó khăn.", text2: "希望是让我们在艰难时刻保持坚强的动力。", text3: "Hy vọng  - 希望", audioFile: "101-200.mp3" },
+{ start: 62.366616, end: 66.57057, text: "Ước mơ là điều giúp chúng ta có động lực vươn tới thành công.", text2: "梦想是激励我们取得成功的动力。", text3: "Ước mơ  - 梦想", audioFile: "101-200.mp3" },
+{ start: 66.57057, end: 71.228361, text: "Đặt ra mục tiêu rõ ràng là bước đầu tiên để đạt được thành công.", text2: "明确设定目标是取得成功的第一步。", text3: "Mục tiêu  - 目标", audioFile: "101-200.mp3" },
+{ start: 71.228361, end: 75.026251, text: "Tương lai là kết quả của những hành động và quyết định hiện tại.", text2: "未来是现在的行动和决策的结果。", text3: "Tương lai  - 未来", audioFile: "101-200.mp3" },
+{ start: 75.026251, end: 79.540725, text: "Quá khứ là những kỷ niệm và bài học mà chúng ta mang theo suốt đời.", text2: "过去是我们终生携带的回忆和教训。", text3: "Quá khứ  - 过去", audioFile: "101-200.mp3" },
+{ start: 79.540725, end: 83.864109, text: "Sống trọn vẹn với hiện tại là cách tốt nhất để tận hưởng cuộc sống.", text2: "全心全意地活在当下是享受生活的最好方式。", text3: "Hiện tại  - 现在", audioFile: "101-200.mp3" },
+{ start: 83.864109, end: 87.590342, text: "Cuộc sống hạnh phúc là điều mà ai cũng mong muốn đạt được.", text2: "幸福的生活是每个人都渴望实现的目标。", text3: "Cuộc sống  - 生活", audioFile: "101-200.mp3" },
+{ start: 87.590342, end: 91.627093, text: "Sự nghiệp thành công đòi hỏi sự kiên trì và nỗ lực không ngừng.", text2: "成功的事业需要坚持不懈的努力。", text3: "Sự nghiệp  - 事业", audioFile: "101-200.mp3" },
+{ start: 91.627093, end: 96.284883, text: "Lương tháng này của tôi đã được tăng lên sau khi hoàn thành tốt công việc.", text2: "完成工作后，我这个月的薪水得到了提高。", text3: "Lương  - 薪水", audioFile: "101-200.mp3" },
+{ start: 96.284883, end: 100.369407, text: "Tiền lương là phần thưởng cho sự cống hiến và lao động chăm chỉ.", text2: "工资是对奉献和辛勤工作的回报。", text3: "Tiền lương  - 工资", audioFile: "101-200.mp3" },
+{ start: 100.369407, end: 104.262842, text: "Thu nhập ổn định giúp đảm bảo cuộc sống sung túc cho gia đình.", text2: "稳定的收入保障了家庭的丰裕生活。", text3: "Thu nhập  - 收入", audioFile: "101-200.mp3" },
+{ start: 104.262842, end: 108.586226, text: "Chi tiêu hợp lý là cách để duy trì tài chính cá nhân ổn định.", text2: "合理支出是维持个人财务稳定的方法。", text3: "Chi tiêu  - 支出", audioFile: "101-200.mp3" },
+{ start: 108.586226, end: 112.766295, text: "Tiết kiệm tiền cho tương lai là một thói quen tốt cần duy trì.", text2: "为未来存钱是一个需要保持的好习惯。", text3: "Tiết kiệm  - 存款", audioFile: "101-200.mp3" },
+{ start: 112.766295, end: 117.495743, text: "Tài sản của anh ấy bao gồm bất động sản, xe hơi và các khoản đầu tư.", text2: "他的资产包括房地产、汽车和投资。", text3: "Tài sản  - 资产", audioFile: "101-200.mp3" },
+{ start: 117.495743, end: 120.505392, text: "Ngôi nhà của chúng tôi nhỏ nhưng rất ấm cúng.", text2: "我们的房子很小，但非常温馨。", text3: "Ngôi nhà  - 房子", audioFile: "101-200.mp3" },
+{ start: 120.505392, end: 124.303283, text: "Căn hộ này có diện tích vừa phải và vị trí thuận tiện.", text2: "这间公寓面积适中，位置便利。", text3: "Căn hộ  - 公寓", audioFile: "101-200.mp3" },
+{ start: 124.303283, end: 127.432362, text: "Phòng của tôi được trang trí theo phong cách hiện đại.", text2: "我的房间装饰得非常现代。", text3: "Phòng  - 房间", audioFile: "101-200.mp3" },
+{ start: 127.432362, end: 131.254139, text: "Nhà bếp là nơi tôi thường nấu những bữa ăn ngon cho gia đình.", text2: "厨房是我经常为家人做美食的地方。", text3: "Nhà bếp  - 厨房", audioFile: "101-200.mp3" },
+{ start: 131.254139, end: 135.386435, text: "Phòng khách rộng rãi và thoải mái, là nơi cả gia đình tụ họp.", text2: "宽敞舒适的客厅是全家聚会的地方。", text3: "Phòng khách  - 客厅", audioFile: "101-200.mp3" },
+{ start: 135.386435, end: 139.757592, text: "Phòng ngủ là không gian riêng tư và yên tĩnh nhất trong nhà.", text2: "卧室是家里最私密和安静的空间。", text3: "Phòng ngủ  - 卧室", audioFile: "101-200.mp3" },
+{ start: 139.757592, end: 142.862785, text: "Phòng tắm được trang bị đầy đủ tiện nghi hiện đại.", text2: "浴室配备了现代化的设施。", text3: "Phòng tắm  - 浴室", audioFile: "101-200.mp3" },
+{ start: 142.862785, end: 146.159067, text: "Chiếc giường êm ái giúp tôi có một giấc ngủ ngon.", text2: "舒适的床帮助我拥有良好的睡眠。", text3: "Giường  - 床", audioFile: "101-200.mp3" },
+{ start: 146.159067, end: 149.980844, text: "Tôi để quần áo gọn gàng trong tủ để tiết kiệm không gian.", text2: "我把衣服整齐地放在衣柜里以节省空间。", text3: "Tủ  - 衣柜", audioFile: "101-200.mp3" },
+{ start: 149.980844, end: 154.089254, text: "Bàn làm việc của tôi được sắp xếp ngăn nắp và luôn sạch sẽ.", text2: "我的书桌被整理得井井有条，且始终保持干净。", text3: "Bàn làm việc  - 书桌", audioFile: "101-200.mp3" },
+{ start: 154.089254, end: 157.289991, text: "Tivi là trung tâm giải trí của cả gia đình mỗi tối.", text2: "电视是每晚全家人娱乐的中心。", text3: "Tivi  - 电视", audioFile: "101-200.mp3" },
+{ start: 157.289991, end: 161.15954, text: "Tủ lạnh giúp bảo quản thực phẩm tươi ngon trong thời gian dài.", text2: "冰箱帮助长时间保存新鲜食物。", text3: "Tủ lạnh  - 冰箱", audioFile: "101-200.mp3" },
+{ start: 161.15954, end: 165.578469, text: "Máy giặt giúp tiết kiệm thời gian và công sức trong việc giặt đồ.", text2: "洗衣机帮助节省时间和洗衣的劳力。", text3: "Máy giặt  - 洗衣机", audioFile: "101-200.mp3" },
+{ start: 165.578469, end: 169.424132, text: "Máy lạnh mang lại không khí mát mẻ trong những ngày hè nóng bức.", text2: "空调在炎热的夏天带来凉爽的空气。", text3: "Máy lạnh  - 空调", audioFile: "101-200.mp3" },
+{ start: 169.424132, end: 173.222023, text: "Tôi thường bật quạt khi trời không quá nóng để tiết kiệm điện.", text2: "当天气不太热时，我通常打开风扇以节省电力。", text3: "Quạt  - 风扇", audioFile: "101-200.mp3" },
+{ start: 173.222023, end: 176.589963, text: "Đèn phòng khách tạo ra ánh sáng ấm áp và dễ chịu.", text2: "客厅的灯光温暖而舒适。", text3: "Đèn  - 灯", audioFile: "101-200.mp3" },
+{ start: 176.589963, end: 180.387854, text: "Công viên là nơi tuyệt vời để tập thể dục và thư giãn.", text2: "公园是锻炼和放松的好地方。", text3: "Công viên  - 公园", audioFile: "101-200.mp3" },
+{ start: 180.387854, end: 184.305175, text: "Sân vận động đã chật kín khán giả đến xem trận đấu quan trọng.", text2: "体育场已挤满了来看重要比赛的观众。", text3: "Sân vận động  - 体育场", audioFile: "101-200.mp3" },
+{ start: 184.305175, end: 187.529799, text: "Tôi đến nhà ga sớm để tránh lỡ chuyến tàu.", text2: "我早早来到火车站，以免错过火车。", text3: "Nhà ga  - 火车站", audioFile: "101-200.mp3" },
+{ start: 187.529799, end: 191.447119, text: "Sân bay quốc tế luôn đông đúc với những chuyến bay đi khắp nơi.", text2: "国际机场总是挤满了飞往各地的航班。", text3: "Sân bay  - 机场", audioFile: "101-200.mp3" },
+{ start: 191.447119, end: 195.292782, text: "Bến xe là nơi tập trung các chuyến xe đi các tỉnh thành.", text2: "汽车站是各省市长途车的集散地。", text3: "Bến xe  - 汽车站", audioFile: "101-200.mp3" },
+{ start: 195.292782, end: 199.329534, text: "Tôi thích sắp xếp sách vở theo thứ tự để dễ dàng tìm kiếm.", text2: "我喜欢按顺序整理书籍以便于查找。", text3: "Sách vở  - 书籍", audioFile: "101-200.mp3" },
+{ start: 199.329534, end: 203.199082, text: "Học viện này nổi tiếng với chương trình giảng dạy chất lượng cao.", text2: "这所学院以高质量的教学而闻名。", text3: "Học viện  - 学院", audioFile: "101-200.mp3" },
+{ start: 203.199082, end: 206.973087, text: "Bài giảng của thầy rất dễ hiểu và cuốn hút sinh viên.", text2: "老师的讲课非常容易理解且吸引学生。", text3: "Bài giảng  - 讲课", audioFile: "101-200.mp3" },
+{ start: 206.973087, end: 210.818749, text: "Giảng viên đã dạy tôi nhiều kiến thức hữu ích cho nghề nghiệp tương lai.", text2: "讲师教了我很多对未来职业有用的知识。", text3: "Giảng viên  - 讲师", audioFile: "101-200.mp3" },
+{ start: 210.818749, end: 214.019487, text: "Cô ấy đã nhận được học bổng toàn phần để du học.", text2: "她获得了全额奖学金去留学。", text3: "Học bổng  - 奖学金", audioFile: "101-200.mp3" },
+{ start: 214.019487, end: 217.578517, text: "Tôi cần chuẩn bị đầy đủ giấy tờ trước khi nộp hồ sơ.", text2: "在提交申请之前，我需要准备好所有文件。", text3: "Giấy tờ  - 文件", audioFile: "101-200.mp3" },
+{ start: 217.578517, end: 221.209204, text: "Bằng cấp của anh ấy giúp anh có nhiều cơ hội việc làm tốt.", text2: "他的学位为他带来了许多好的工作机会。", text3: "Bằng cấp  - 学位", audioFile: "101-200.mp3" },
+{ start: 221.209204, end: 225.437045, text: "Chứng chỉ ngoại ngữ là yêu cầu cần thiết khi xin việc ở công ty này.", text2: "在这家公司申请工作时，外语证书是必需的。", text3: "Chứng chỉ  - 证书", audioFile: "101-200.mp3" },
+{ start: 225.437045, end: 228.972188, text: "Thư viện là nơi lý tưởng để học tập và nghiên cứu.", text2: "图书馆是学习和研究的理想场所。", text3: "Thư viện  - 图书馆", audioFile: "101-200.mp3" },
+{ start: 228.972188, end: 232.722306, text: "Khuôn viên trường rất rộng và thoáng mát với nhiều cây xanh.", text2: "学校的校园很宽敞，并且绿树成荫。", text3: "Khuôn viên  - 校园", audioFile: "101-200.mp3" },
+{ start: 232.722306, end: 236.926261, text: "Cửa hàng này bán nhiều loại sản phẩm từ quần áo đến đồ gia dụng.", text2: "这家商店销售从服装到家用物品的各种商品。", text3: "Cửa hàng  - 商店", audioFile: "101-200.mp3" },
+{ start: 236.926261, end: 241.297417, text: "Tôi thường đến hiệu sách để mua sách mới và tìm kiếm tài liệu học tập.", text2: "我经常去书店购买新书和寻找学习资料。", text3: "Hiệu sách  - 书店", audioFile: "101-200.mp3" },
+{ start: 241.297417, end: 246.026866, text: "Nhà hát là nơi diễn ra những vở kịch và buổi biểu diễn âm nhạc đặc sắc.", text2: "剧院是精彩戏剧和音乐会表演的场所。", text3: "Nhà hát  - 剧院", audioFile: "101-200.mp3" },
+{ start: 246.026866, end: 249.442579, text: "Chúng tôi đã đi đến rạp chiếu phim để xem bộ phim mới ra mắt.", text2: "我们去电影院观看了新上映的电影。", text3: "Rạp chiếu phim  - 电影院", audioFile: "101-200.mp3" },
+{ start: 249.442579, end: 253.813736, text: "Bảo tàng lưu giữ nhiều hiện vật quý giá và có giá trị lịch sử.", text2: "博物馆保存了许多珍贵的历史文物。", text3: "Bảo tàng  - 博物馆", audioFile: "101-200.mp3" },
+{ start: 253.813736, end: 258.041576, text: "Triển lãm nghệ thuật đã thu hút nhiều người đến tham quan và chiêm ngưỡng.", text2: "艺术展览吸引了许多人前来参观和欣赏。", text3: "Triển lãm  - 展览", audioFile: "101-200.mp3" },
+{ start: 258.041576, end: 262.842683, text: "Tác phẩm của nhà văn này đã được dịch ra nhiều thứ tiếng và xuất bản toàn cầu.", text2: "这位作家的作品已被翻译成多种语言，并在全球出版。", text3: "Tác phẩm  - 作品", audioFile: "101-200.mp3" },
+{ start: 262.842683, end: 266.879434, text: "Nhà văn này nổi tiếng với các tiểu thuyết sâu sắc và ý nghĩa.", text2: "这位作家以其深刻有意义的小说而闻名。", text3: "Nhà văn  - 作家", audioFile: "101-200.mp3" },
+{ start: 266.879434, end: 270.58178, text: "Thơ ca là một phần quan trọng của văn hóa và nghệ thuật.", text2: "诗歌是文化和艺术的重要组成部分。", text3: "Thơ ca  - 诗歌", audioFile: "101-200.mp3" },
+{ start: 270.58178, end: 275.096254, text: "Tập thơ mới của cô ấy đã nhận được nhiều lời khen ngợi từ giới phê bình.", text2: "她的新诗集得到了评论界的高度赞赏。", text3: "Tập thơ  - 诗集", audioFile: "101-200.mp3" },
+{ start: 275.096254, end: 278.750828, text: "Tôi đang đọc một tiểu thuyết thú vị về cuộc sống ở thành phố.", text2: "我正在阅读一本关于城市生活的有趣小说。", text3: "Tiểu thuyết  - 小说", audioFile: "101-200.mp3" },
+{ start: 278.750828, end: 283.193643, text: "Nhân vật chính trong câu chuyện này là một người đầy nghị lực và quyết tâm.", text2: "故事的主角是一个充满毅力和决心的人。", text3: "Nhân vật  - 人物", audioFile: "101-200.mp3" },
+{ start: 283.193643, end: 287.302053, text: "Cốt truyện của bộ phim rất hấp dẫn và khiến người xem không thể rời mắt.", text2: "电影的故事情节非常吸引人，让观众目不转睛。", text3: "Cốt truyện  - 故事情节", audioFile: "101-200.mp3" },
+{ start: 287.302053, end: 291.506007, text: "Bi kịch này đã làm lay động lòng người và để lại ấn tượng sâu sắc.", text2: "这场悲剧感动了人心，留下了深刻的印象。", text3: "Bi kịch  - 悲剧", audioFile: "101-200.mp3" },
+{ start: 291.506007, end: 296.139911, text: "Hài kịch mang lại tiếng cười và giúp giảm căng thẳng sau một ngày dài.", text2: "喜剧带来了笑声，帮助减轻一天的压力。", text3: "Hài kịch  - 喜剧", audioFile: "101-200.mp3" },
+{ start: 296.139911, end: 300.606612, text: "Những kỷ niệm về thời thơ ấu luôn là những gì đáng nhớ nhất trong cuộc đời.", text2: "童年的回忆永远是人生中最值得珍惜的东西。", text3: "Kỷ niệm  - 纪念", audioFile: "101-200.mp3" },
+{ start: 300.606612, end: 305.742125, text: "Đám cưới là một sự kiện quan trọng, đánh dấu sự khởi đầu của một cuộc sống mới.", text2: "婚礼是一个重要的事件，标志着新生活的开始。", text3: "Đám cưới  - 婚礼", audioFile: "101-200.mp3" },
+{ start: 305.742125, end: 309.611673, text: "Đám hỏi là nghi thức quan trọng trước khi tổ chức đám cưới.", text2: "订婚是婚礼前的重要仪式。", text3: "Đám hỏi  - 订婚", audioFile: "101-200.mp3" },
+{ start: 309.611673, end: 314.627755, text: "Đám ma là dịp để gia đình và bạn bè tiễn đưa người đã khuất về nơi an nghỉ cuối cùng.", text2: "葬礼是家人和朋友送别逝者的最后一站。", text3: "Đám ma  - 葬礼", audioFile: "101-200.mp3" },
+{ start: 314.627755, end: 318.592848, text: "Lễ hội là dịp để cộng đồng cùng nhau vui chơi và gắn kết.", text2: "节日是社区共同娱乐和联结的时机。", text3: "Lễ hội  - 节日", audioFile: "101-200.mp3" },
+{ start: 318.592848, end: 322.438511, text: "Nghi thức truyền thống được tổ chức rất trang trọng trong các dịp lễ hội.", text2: "在节日期间，传统仪式被隆重举行。", text3: "Nghi thức  - 仪式", audioFile: "101-200.mp3" },
+{ start: 322.438511, end: 326.260288, text: "Tôn giáo là niềm tin và sự tôn thờ các đấng thiêng liêng.", text2: "宗教是对神圣之物的信仰和崇拜。", text3: "Tôn giáo  - 宗教", audioFile: "101-200.mp3" },
+{ start: 326.260288, end: 330.918078, text: "Nhà thờ là nơi tín đồ tụ họp để cầu nguyện và tham gia các nghi lễ.", text2: "教堂是信徒聚集祈祷和参加仪式的地方。", text3: "Nhà thờ  - 教堂", audioFile: "101-200.mp3" },
+{ start: 330.918078, end: 335.790843, text: "Chùa là nơi thanh tịnh và linh thiêng, nơi con người tìm đến để cầu an.", text2: "寺庙是宁静和神圣的地方，人们到这里祈求平安。", text3: "Chùa  - 寺庙", audioFile: "101-200.mp3" },
+{ start: 335.790843, end: 340.424747, text: "Đền thờ các vị thần linh và là nơi thực hiện các nghi lễ cúng bái.", text2: "庙宇是供奉神灵和举行祭祀仪式的地方。", text3: "Đền  - 庙宇", audioFile: "101-200.mp3" },
+{ start: 340.424747, end: 344.246524, text: "Miếu là nơi thờ cúng các vị thần địa phương và tổ tiên.", text2: "庙是供奉当地神灵和祖先的地方。", text3: "Miếu  - 庙", audioFile: "101-200.mp3" },
+{ start: 344.246524, end: 348.952086, text: "Thánh thất là nơi linh thiêng, nơi người dân đến cầu nguyện và tỏ lòng thành kính.", text2: "圣殿是神圣的地方，人们来这里祈祷和表达敬意。", text3: "Thánh thất  - 圣殿", audioFile: "101-200.mp3" },
+{ start: 348.952086, end: 353.132154, text: "Công lý cần được thực thi để bảo vệ quyền lợi của mọi người.", text2: "公正需要被实施，以保护每个人的权利。", text3: "Công lý  - 公正", audioFile: "101-200.mp3" },
+{ start: 353.132154, end: 356.977817, text: "Tòa án là nơi xét xử các vụ án và bảo vệ công lý.", text2: "法院是审理案件和维护公正的地方。", text3: "Tòa án  - 法院", audioFile: "101-200.mp3" },
+{ start: 356.977817, end: 360.990682, text: "Luật sư giúp bảo vệ quyền lợi của thân chủ trong các vụ án.", text2: "律师在案件中帮助维护当事人的权益。", text3: "Luật sư  - 律师", audioFile: "101-200.mp3" },
+{ start: 360.990682, end: 364.931889, text: "Thẩm phán là người quyết định cuối cùng về số phận của bị cáo.", text2: "法官是决定被告命运的最终裁判者。", text3: "Thẩm phán  - 法官", audioFile: "101-200.mp3" },
+{ start: 364.931889, end: 369.111957, text: "Tội phạm cần bị trừng phạt nghiêm minh để duy trì trật tự xã hội.", text2: "罪犯需要被严惩以维持社会秩序。", text3: "Tội phạm  - 罪犯", audioFile: "101-200.mp3" },
+{ start: 369.111957, end: 373.053164, text: "Vụ án này đã gây xôn xao dư luận trong thời gian dài.", text2: "这起案件在很长一段时间内引起了公众的轰动。", text3: "Vụ án  - 案件", audioFile: "101-200.mp3" },
+{ start: 373.053164, end: 376.349447, text: "Cảnh sát đang tiến hành điều tra để làm rõ sự việc.", text2: "警方正在进行调查，以查明事实。", text3: "Điều tra  - 调查", audioFile: "101-200.mp3" },
+{ start: 376.349447, end: 380.099565, text: "Cảnh sát có nhiệm vụ bảo vệ an ninh và trật tự xã hội.", text2: "警察的任务是维护社会的安全和秩序。", text3: "Cảnh sát  - 警察", audioFile: "101-200.mp3" },
+{ start: 380.099565, end: 383.252531, text: "Tù nhân đang được giám sát chặt chẽ trong nhà tù.", text2: "囚犯在监狱中被严格监视。", text3: "Tù nhân  - 囚犯", audioFile: "101-200.mp3" },
+{ start: 383.252531, end: 387.145965, text: "Giám thị chịu trách nhiệm giám sát và quản lý các tù nhân.", text2: "监狱官负责监督和管理囚犯。", text3: "Giám thị  - 监狱官", audioFile: "101-200.mp3" },
+{ start: 387.145965, end: 391.063286, text: "Ngục tù là nơi giam giữ và cải tạo những người vi phạm pháp luật.", text2: "监狱是关押和改造违法者的地方。", text3: "Ngục tù  - 监狱", audioFile: "101-200.mp3" },
+{ start: 391.063286, end: 394.741746, text: "Kẻ tình nghi đã bị giam giữ để chờ kết quả điều tra.", text2: "嫌疑犯已被拘留，等待调查结果。", text3: "Giam giữ  - 拘留", audioFile: "101-200.mp3" },
+{ start: 394.741746, end: 398.969587, text: "Giáo dục là nền tảng quan trọng để phát triển một xã hội văn minh.", text2: "教育是发展文明社会的重要基础。", text3: "Giáo dục  - 教育", audioFile: "101-200.mp3" },
+{ start: 0, end: 4.157416, text: "Hệ thống giáo dục cần được cải cách để đáp ứng nhu cầu của thời đại mới.", text2: "教育系统需要改革以应对新时代的需求。", text3: "Hệ thống  - 系统", audioFile: "201-300.mp3" },
+{ start: 4.309147, end: 7.556179, text: "Chính phủ có trách nhiệm điều hành và quản lý đất nước.", text2: "政府负责治理和管理国家。", text3: "Chính phủ  - 政府", audioFile: "201-300.mp3" },
+{ start: 7.768602, end: 11.956364, text: "Quốc hội là cơ quan lập pháp cao nhất, nơi ra quyết định về luật pháp.", text2: "国会是最高立法机关，负责制定法律。", text3: "Quốc hội  - 国会", audioFile: "201-300.mp3" },
+{ start: 11.956364, end: 16.386895, text: "Chính trị đóng vai trò quan trọng trong việc định hướng phát triển của quốc gia.", text2: "政治在国家发展方向中起着重要作用。", text3: "Chính trị  - 政治", audioFile: "201-300.mp3" },
+{ start: 16.386895, end: 20.665696, text: "Cộng đồng là nơi mọi người cùng chung sống và hỗ trợ lẫn nhau.", text2: "社区是人们共同生活和互相支持的地方。", text3: "Cộng đồng  - 社区", audioFile: "201-300.mp3" },
+{ start: 20.665696, end: 25.096226, text: "Xã hội ngày càng phát triển và phức tạp với nhiều vấn đề cần giải quyết.", text2: "社会日益发展和复杂，有许多问题需要解决。", text3: "Xã hội  - 社会", audioFile: "201-300.mp3" },
+{ start: 25.096226, end: 29.132258, text: "Kinh tế là lĩnh vực quyết định đến sự thịnh vượng của một quốc gia.", text2: "经济是决定一个国家繁荣的领域。", text3: "Kinh tế  - 经济", audioFile: "201-300.mp3" },
+{ start: 29.132258, end: 33.775212, text: "Địa lý giúp chúng ta hiểu rõ về các vùng miền và môi trường tự nhiên.", text2: "地理帮助我们了解各地区和自然环境。", text3: "Địa lý  - 地理", audioFile: "201-300.mp3" },
+{ start: 33.775212, end: 37.841589, text: "Lịch sử ghi lại những sự kiện quan trọng đã diễn ra trong quá khứ.", text2: "历史记录了过去发生的重要事件。", text3: "Lịch sử  - 历史", audioFile: "201-300.mp3" },
+{ start: 37.841589, end: 42.81835, text: "Văn hóa là bản sắc của một dân tộc, thể hiện qua phong tục và lối sống.", text2: "文化是一个民族的特色，通过习俗和生活方式体现。", text3: "Văn hóa  - 文化", audioFile: "201-300.mp3" },
+{ start: 42.81835, end: 46.277806, text: "Ngôn ngữ là phương tiện giao tiếp chính yếu giữa con người.", text2: "语言是人与人之间的主要交流工具。", text3: "Ngôn ngữ  - 语言", audioFile: "201-300.mp3" },
+{ start: 46.277806, end: 50.52626, text: "Giao tiếp hiệu quả giúp cải thiện mối quan hệ và hợp tác trong công việc.", text2: "有效的交流有助于改善关系和工作中的合作。", text3: "Giao tiếp  - 交流", audioFile: "201-300.mp3" },
+{ start: 50.52626, end: 54.562292, text: "Kỹ năng mềm là yếu tố quan trọng giúp bạn thành công trong công việc.", text2: "软技能是你在工作中取得成功的重要因素。", text3: "Kỹ năng  - 技能", audioFile: "201-300.mp3" },
+{ start: 54.562292, end: 58.325208, text: "Kiến thức chuyên môn là điều cần thiết để phát triển trong nghề nghiệp.", text2: "专业知识是职业发展所必需的。", text3: "Chuyên môn  - 专业", audioFile: "201-300.mp3" },
+{ start: 58.325208, end: 63.301969, text: "Lựa chọn một nghề nghiệp phù hợp sẽ ảnh hưởng đến cuộc sống và sự nghiệp của bạn.", text2: "选择一个合适的职业将影响你的生活和事业。", text3: "Nghề nghiệp  - 职业", audioFile: "201-300.mp3" },
+{ start: 63.301969, end: 67.550423, text: "Ngành nghề xây dựng đang phát triển mạnh mẽ với nhiều dự án lớn.", text2: "建筑行业正在蓬勃发展，有许多大型项目。", text3: "Ngành nghề  - 行业", audioFile: "201-300.mp3" },
+{ start: 67.550423, end: 72.102339, text: "Sản xuất hàng hóa cần đảm bảo chất lượng và đáp ứng nhu cầu thị trường.", text2: "生产商品需要确保质量并满足市场需求。", text3: "Sản xuất  - 生产", audioFile: "201-300.mp3" },
+{ start: 72.102339, end: 76.745292, text: "Nông nghiệp đóng vai trò quan trọng trong việc cung cấp lương thực cho dân cư.", text2: "农业在为居民提供粮食方面起着重要作用。", text3: "Nông nghiệp  - 农业", audioFile: "201-300.mp3" },
+{ start: 76.745292, end: 80.81167, text: "Công nghiệp hóa đã thúc đẩy sự phát triển kinh tế của nhiều quốc gia.", text2: "工业化促进了许多国家的经济发展。", text3: "Công nghiệp  - 工业", audioFile: "201-300.mp3" },
+{ start: 80.81167, end: 84.787009, text: "Thương mại quốc tế ngày càng trở nên phổ biến và quan trọng.", text2: "国际商业日益普及且重要。", text3: "Thương mại  - 商业", audioFile: "201-300.mp3" },
+{ start: 84.787009, end: 88.610618, text: "Sản phẩm của Việt Nam được xuất khẩu sang nhiều nước trên thế giới.", text2: "越南的产品出口到世界各地。", text3: "Xuất khẩu  - 出口", audioFile: "201-300.mp3" },
+{ start: 88.610618, end: 93.223226, text: "Các mặt hàng nhập khẩu phải tuân thủ quy định về chất lượng và an toàn.", text2: "进口商品必须符合质量和安全规定。", text3: "Nhập khẩu  - 进口", audioFile: "201-300.mp3" },
+{ start: 93.223226, end: 97.198565, text: "Hải quan là nơi kiểm tra và thông quan hàng hóa xuất nhập khẩu.", text2: "海关是检查和清关进出口商品的地方。", text3: "Hải quan  - 海关", audioFile: "201-300.mp3" },
+{ start: 97.198565, end: 102.266364, text: "Chính phủ thu thuế để tài trợ cho các dịch vụ công cộng và phát triển hạ tầng.", text2: "政府通过税收资助公共服务和基础设施建设。", text3: "Thuế  - 税收", audioFile: "201-300.mp3" },
+{ start: 102.266364, end: 106.787934, text: "Ngân sách quốc gia được phân bổ cho nhiều lĩnh vực khác nhau để phát triển đất nước.", text2: "国家预算被分配给不同的领域以发展国家。", text3: "Ngân sách  - 预算", audioFile: "201-300.mp3" },
+{ start: 106.787934, end: 110.520504, text: "Mỗi quốc gia có một nền văn hóa và lịch sử riêng biệt.", text2: "每个国家都有自己独特的文化和历史。", text3: "Quốc gia  - 国家", audioFile: "201-300.mp3" },
+{ start: 110.520504, end: 114.799304, text: "Việt Nam là một quốc gia đa dân tộc với 54 dân tộc anh em.", text2: "越南是一个多民族国家，有54个兄弟民族。", text3: "Dân tộc  - 民族", audioFile: "201-300.mp3" },
+{ start: 114.799304, end: 119.442258, text: "Mỗi vùng miền của Việt Nam đều có đặc điểm văn hóa và ẩm thực riêng.", text2: "越南的每个地区都有自己独特的文化和美食。", text3: "Vùng miền  - 地区", audioFile: "201-300.mp3" },
+{ start: 119.442258, end: 123.690712, text: "Chính quyền địa phương có trách nhiệm quản lý các vấn đề của cộng đồng.", text2: "当地政府负责管理社区的问题。", text3: "Địa phương  - 当地", audioFile: "201-300.mp3" },
+{ start: 123.690712, end: 127.817782, text: "Thành phố Hồ Chí Minh là trung tâm kinh tế lớn nhất của Việt Nam.", text2: "胡志明市是越南最大的经济中心。", text3: "Thành phố  - 城市", audioFile: "201-300.mp3" },
+{ start: 127.817782, end: 131.88416, text: "Thị trấn này nổi tiếng với các di tích lịch sử và phong cảnh đẹp.", text2: "这个小镇因其历史遗迹和美丽风景而闻名。", text3: "Thị trấn  - 小镇", audioFile: "201-300.mp3" },
+{ start: 131.88416, end: 136.223653, text: "Làng quê Việt Nam thanh bình và mang đậm nét văn hóa truyền thống.", text2: "越南的乡村宁静且充满传统文化气息。", text3: "Làng  - 村庄", audioFile: "201-300.mp3" },
+{ start: 136.223653, end: 139.409993, text: "Xóm nhỏ nơi tôi ở rất đoàn kết và thân thiện.", text2: "我所在的街坊非常团结和友好。", text3: "Xóm  - 街坊", audioFile: "201-300.mp3" },
+{ start: 139.409993, end: 143.263948, text: "Thôn là đơn vị hành chính nhỏ nhất ở nông thôn Việt Nam.", text2: "乡是越南农村最小的行政单位。", text3: "Thôn  - 乡", audioFile: "201-300.mp3" },
+{ start: 143.263948, end: 147.178595, text: "Bản là nơi cư trú của các dân tộc thiểu số trên núi.", text2: "山村是少数民族在山区的居住地。", text3: "Bản  - 山村", audioFile: "201-300.mp3" },
+{ start: 147.178595, end: 151.57878, text: "Đồng bằng sông Cửu Long là vùng sản xuất lúa gạo lớn nhất Việt Nam.", text2: "湄公河三角洲是越南最大的稻米生产地区。", text3: "Đồng bằng  - 平原", audioFile: "201-300.mp3" },
+{ start: 151.57878, end: 157.101771, text: "Núi Phanxipăng là đỉnh cao nhất ở Việt Nam, được mệnh danh là Nóc nhà Đông Dương.", text2: "番西邦山是越南最高的山峰，被誉为“印度支那屋脊”。", text3: "Núi  - 山", audioFile: "201-300.mp3" },
+{ start: 157.101771, end: 162.108878, text: "Rừng nhiệt đới ở Việt Nam là nơi sinh sống của nhiều loài động thực vật quý hiếm.", text2: "越南的热带森林是许多珍稀动植物的栖息地。", text3: "Rừng  - 森林", audioFile: "201-300.mp3" },
+{ start: 162.108878, end: 165.841448, text: "Sông Hồng là con sông dài nhất ở miền Bắc Việt Nam.", text2: "红河是越南北部最长的河流。", text3: "Sông  - 河流", audioFile: "201-300.mp3" },
+{ start: 165.841448, end: 169.270558, text: "Biển Đông là vùng biển chiến lược quan trọng của Việt Nam.", text2: "东海是越南的重要战略海域。", text3: "Biển  - 海", audioFile: "201-300.mp3" },
+{ start: 169.270558, end: 173.488666, text: "Hồ Gươm là biểu tượng lịch sử và văn hóa của thủ đô Hà Nội.", text2: "还剑湖是河内历史和文化的象征。", text3: "Hồ  - 湖", audioFile: "201-300.mp3" },
+{ start: 173.488666, end: 177.160544, text: "Đảo Phú Quốc là một điểm du lịch nổi tiếng ở Việt Nam.", text2: "富国岛是越南著名的旅游胜地。", text3: "Đảo  - 岛", audioFile: "201-300.mp3" },
+{ start: 177.160544, end: 181.894536, text: "Những đồi chè xanh mướt trải dài ở vùng cao nguyên là cảnh quan tuyệt đẹp.", text2: "高原上的绿色茶丘延绵不绝，景色绝美。", text3: "Đồi  - 山丘", audioFile: "201-300.mp3" },
+{ start: 181.894536, end: 186.53749, text: "Thung lũng Mai Châu nổi tiếng với cảnh quan thiên nhiên hoang sơ và thanh bình.", text2: "麦州谷以其原始宁静的自然景观而闻名。", text3: "Thung lũng  - 山谷", audioFile: "201-300.mp3" },
+{ start: 186.658874, end: 192.303249, text: "Sa mạc Sahara là sa mạc lớn nhất thế giới, nổi tiếng với sự khắc nghiệt.", text2: "撒哈拉沙漠是世界上最大的沙漠，以其恶劣环境著称。", text3: "Sa mạc  - 沙漠", audioFile: "201-300.mp3" },
+{ start: 192.303249, end: 196.885511, text: "Vườn quốc gia Cát Tiên là nơi bảo tồn nhiều loài động vật quý hiếm.", text2: "Cát Tiên国家公园是许多珍稀动物的保护地。", text3: "Động vật  - 动物", audioFile: "201-300.mp3" },
+{ start: 196.885511, end: 201.164311, text: "Rừng nhiệt đới có hệ thực vật phong phú với nhiều loài cây quý hiếm.", text2: "热带雨林有丰富的植物群，包括许多珍稀树种。", text3: "Thực vật  - 植物", audioFile: "201-300.mp3" },
+{ start: 201.164311, end: 205.655534, text: "Cây cối trong công viên được chăm sóc rất tốt, tạo bóng mát cho du khách.", text2: "公园里的树木得到精心照顾，为游客提供了阴凉。", text3: "Cây cối  - 树木", audioFile: "201-300.mp3" },
+{ start: 205.655534, end: 210.268142, text: "Hoa sen là biểu tượng của sự tinh khiết và cao quý trong văn hóa Việt Nam.", text2: "莲花是越南文化中纯洁和高贵的象征。", text3: "Hoa  - 花", audioFile: "201-300.mp3" },
+{ start: 210.268142, end: 214.577288, text: "Những bãi cỏ xanh mướt trong công viên là nơi lý tưởng để thư giãn.", text2: "公园里绿油油的草地是放松的理想之地。", text3: "Cỏ  - 草", audioFile: "201-300.mp3" },
+{ start: 214.577288, end: 220.039587, text: "Vườn cây ăn quả của ông tôi trồng đủ loại trái cây như cam, xoài, nhãn.", text2: "我爷爷的果园里种满了橙子、芒果和龙眼等各种水果。", text3: "Cây ăn quả  - 果树", audioFile: "201-300.mp3" },
+{ start: 220.039587, end: 224.743233, text: "Cây cảnh trong nhà giúp không gian sống trở nên sinh động và tươi mới hơn.", text2: "室内盆栽使生活空间更加生动和清新。", text3: "Cây cảnh  - 盆栽", audioFile: "201-300.mp3" },
+{ start: 224.743233, end: 228.839956, text: "Rau xanh là nguồn dinh dưỡng quan trọng cho sức khỏe con người.", text2: "绿叶蔬菜是人体健康的重要营养来源。", text3: "Rau xanh  - 绿叶蔬菜", audioFile: "201-300.mp3" },
+{ start: 228.839956, end: 233.088411, text: "Ngũ cốc là thành phần chính trong chế độ ăn uống hàng ngày của con người.", text2: "谷物是人类日常饮食的主要组成部分。", text3: "Ngũ cốc  - 谷物", audioFile: "201-300.mp3" },
+{ start: 233.088411, end: 237.06375, text: "Việt Nam là một trong những nước xuất khẩu gạo lớn nhất thế giới.", text2: "越南是世界上最大的大米出口国之一。", text3: "Lúa  - 稻米", audioFile: "201-300.mp3" },
+{ start: 237.06375, end: 241.554973, text: "Ngô là loại cây trồng phổ biến và được sử dụng để chế biến nhiều món ăn.", text2: "玉米是一种常见的作物，可用于制作多种食物。", text3: "Ngô  - 玉米", audioFile: "201-300.mp3" },
+{ start: 241.554973, end: 245.591005, text: "Khoai là nguồn cung cấp năng lượng tốt và dễ trồng ở nhiều nơi.", text2: "红薯是良好的能量来源，适合在许多地方种植。", text3: "Khoai  - 红薯", audioFile: "201-300.mp3" },
+{ start: 245.591005, end: 249.232537, text: "Sắn là cây lương thực quan trọng ở nhiều quốc gia nhiệt đới.", text2: "木薯是许多热带国家的重要粮食作物。", text3: "Sắn  - 木薯", audioFile: "201-300.mp3" },
+{ start: 249.232537, end: 253.17753, text: "Động đất là một hiện tượng thiên nhiên gây ra nhiều thiệt hại lớn.", text2: "地震是一种造成重大损失的自然现象。", text3: "Động đất  - 地震", audioFile: "201-300.mp3" },
+{ start: 253.17753, end: 257.820484, text: "Mỗi năm, Việt Nam phải đối mặt với nhiều cơn bão mạnh từ Biển Đông.", text2: "每年，越南都要面对来自东海的强台风。", text3: "Bão  - 台风", audioFile: "201-300.mp3" },
+{ start: 257.820484, end: 262.008246, text: "Lũ lụt gây thiệt hại nghiêm trọng cho các vùng đồng bằng ven sông.", text2: "洪水对沿河平原地区造成了严重的破坏。", text3: "Lũ lụt  - 洪水", audioFile: "201-300.mp3" },
+{ start: 262.008246, end: 266.013932, text: "Sóng thần là hiện tượng tự nhiên hiếm gặp nhưng cực kỳ nguy hiểm.", text2: "海啸是一种罕见但极其危险的自然现象。", text3: "Sóng thần  - 海啸", audioFile: "201-300.mp3" },
+{ start: 266.013932, end: 270.23204, text: "Nắng ấm giúp cây cối phát triển và con người cảm thấy dễ chịu.", text2: "温暖的阳光帮助植物生长，使人感到舒适。", text3: "Nắng  - 阳光", audioFile: "201-300.mp3" },
+{ start: 270.353424, end: 274.389456, text: "Mưa giúp cung cấp nước cho các hồ chứa và làm sạch không khí.", text2: "雨水为水库提供水源，并净化空气。", text3: "Mưa  - 雨", audioFile: "201-300.mp3" },
+{ start: 274.389456, end: 278.182719, text: "Gió thổi mạnh làm những cánh đồng lúa ngả rạp như sóng biển.", text2: "强风使稻田像海浪一样倾斜。", text3: "Gió  - 风", audioFile: "201-300.mp3" },
+{ start: 278.182719, end: 282.370481, text: "Tuyết trắng phủ kín các dãy núi, tạo nên khung cảnh tuyệt đẹp.", text2: "白雪覆盖了山脉，形成了绝美的景色。", text3: "Tuyết  - 雪", audioFile: "201-300.mp3" },
+{ start: 282.370481, end: 287.134819, text: "Khí hậu Việt Nam thay đổi theo từng vùng miền, từ nhiệt đới đến ôn đới.", text2: "越南的气候因地区而异，从热带到温带。", text3: "Khí hậu  - 气候", audioFile: "201-300.mp3" },
+{ start: 287.134819, end: 291.595696, text: "Nhiệt độ vào mùa hè thường rất cao, lên tới 40 độ C.", text2: "夏季的温度通常很高，达到40摄氏度。", text3: "Nhiệt độ  - 温度", audioFile: "201-300.mp3" },
+{ start: 291.595696, end: 296.177957, text: "Sự thay đổi áp suất không khí có thể gây ra các hiện tượng thời tiết khác nhau.", text2: "气压的变化可能导致不同的天气现象。", text3: "Áp suất  - 气压", audioFile: "201-300.mp3" },
+{ start: 296.177957, end: 300.001566, text: "Không khí trong lành rất quan trọng cho sức khỏe của con người.", text2: "新鲜空气对人类健康非常重要。", text3: "Không khí  - 空气", audioFile: "201-300.mp3" },
+{ start: 300.001566, end: 304.067944, text: "Bầu trời xanh thẳm với những đám mây trắng tạo nên cảnh tượng tuyệt đẹp.", text2: "蓝天白云构成了美丽的景象。", text3: "Bầu trời  - 天空", audioFile: "201-300.mp3" },
+{ start: 304.067944, end: 308.22536, text: "Mặt trời là nguồn năng lượng vô tận cho sự sống trên Trái Đất.", text2: "太阳是地球上生命的无尽能量来源。", text3: "Mặt trời  - 太阳", audioFile: "201-300.mp3" },
+{ start: 308.22536, end: 312.50416, text: "Mặt trăng tỏa sáng trong đêm tối, tạo nên khung cảnh thơ mộng.", text2: "月亮在黑夜中发光，营造出浪漫的景象。", text3: "Mặt trăng  - 月亮", audioFile: "201-300.mp3" },
+{ start: 312.50416, end: 316.63123, text: "Hàng triệu ngôi sao lấp lánh trên bầu trời đêm làm ta say mê.", text2: "数百万颗星星在夜空中闪烁，令人陶醉。", text3: "Ngôi sao  - 星星", audioFile: "201-300.mp3" },
+{ start: 316.63123, end: 320.970723, text: "Thiên hà chứa hàng tỷ ngôi sao và là một phần của vũ trụ rộng lớn.", text2: "银河系包含数十亿颗星星，是广阔宇宙的一部分。", text3: "Thiên hà  - 银河", audioFile: "201-300.mp3" },
+{ start: 320.970723, end: 324.581909, text: "Trái Đất là một trong tám hành tinh trong hệ Mặt Trời.", text2: "地球是太阳系中的八大行星之一。", text3: "Hành tinh  - 行星", audioFile: "201-300.mp3" },
+{ start: 324.581909, end: 328.61794, text: "Vũ trụ bao la và chưa có giới hạn được khám phá bởi con người.", text2: "宇宙浩瀚无垠，人类尚未探索到其边界。", text3: "Vũ trụ  - 宇宙", audioFile: "201-300.mp3" },
+{ start: 328.61794, end: 333.655393, text: "Vệ tinh nhân tạo được phóng lên không gian để quan sát Trái Đất và các hành tinh khác.", text2: "人造卫星被发射到太空，用于观测地球和其他行星。", text3: "Vệ tinh  - 卫星", audioFile: "201-300.mp3" },
+{ start: 333.655393, end: 338.541116, text: "Tên lửa là phương tiện để đưa vệ tinh và tàu vũ trụ ra ngoài không gian.", text2: "火箭是将卫星和航天器送入太空的工具。", text3: "Tên lửa  - 火箭", audioFile: "201-300.mp3" },
+{ start: 338.541116, end: 343.48753, text: "Khinh khí cầu bay lơ lửng trên bầu trời tạo ra cảnh tượng lãng mạn và yên bình.", text2: "热气球在空中飘荡，营造出浪漫和平静的景象。", text3: "Khinh khí cầu  - 热气球", audioFile: "201-300.mp3" },
+{ start: 343.48753, end: 347.887715, text: "Tàu hỏa là phương tiện giao thông quan trọng kết nối các thành phố lớn.", text2: "火车是连接大城市的重要交通工具。", text3: "Tàu hỏa  - 火车", audioFile: "201-300.mp3" },
+{ start: 347.887715, end: 351.984439, text: "Tàu điện ngầm ở các đô thị lớn giúp giảm thiểu ùn tắc giao thông.", text2: "大城市的地铁有助于减少交通堵塞。", text3: "Tàu điện  - 电车", audioFile: "201-300.mp3" },
+{ start: 351.984439, end: 356.475662, text: "Xe buýt là phương tiện công cộng tiện lợi và tiết kiệm chi phí.", text2: "公交车是方便且节省费用的公共交通工具。", text3: "Xe buýt  - 公交车", audioFile: "201-300.mp3" },
+{ start: 356.475662, end: 361.573807, text: "Taxi có thể đưa bạn đến bất kỳ địa điểm nào trong thành phố một cách nhanh chóng.", text2: "出租车可以快速带你到达城市的任何地方。", text3: "Taxi  - 出租车", audioFile: "201-300.mp3" },
+{ start: 361.573807, end: 365.427762, text: "Máy bay là phương tiện vận chuyển nhanh nhất cho các chuyến đi xa.", text2: "飞机是长途旅行最快的交通工具。", text3: "Máy bay  - 飞机", audioFile: "201-300.mp3" },
+{ start: 365.427762, end: 369.433448, text: "Cảng biển là nơi tập trung hàng hóa xuất nhập khẩu quan trọng.", text2: "海港是进出口货物的重要集散地。", text3: "Cảng  - 港口", audioFile: "201-300.mp3" },
+{ start: 369.433448, end: 373.044634, text: "Bến cảng là nơi tàu thuyền neo đậu để bốc dỡ hàng hóa.", text2: "码头是船只停靠装卸货物的地方。", text3: "Bến cảng  - 码头", audioFile: "201-300.mp3" },
+{ start: 373.044634, end: 377.171704, text: "Ga tàu trung tâm luôn đông đúc với hàng ngàn hành khách mỗi ngày.", text2: "中心火车站每天都有成千上万的乘客。", text3: "Ga tàu  - 火车站", audioFile: "201-300.mp3" },
+{ start: 377.171704, end: 381.147043, text: "Ga điện ngầm được thiết kế hiện đại và an toàn cho hành khách.", text2: "地铁站设计现代且安全，方便乘客使用。", text3: "Ga điện  - 电车站", audioFile: "201-300.mp3" },
+{ start: 381.147043, end: 384.545807, text: "Đường sắt là mạng lưới giao thông huyết mạch của quốc gia.", text2: "铁路是国家的重要交通网络。", text3: "Đường sắt  - 铁路", audioFile: "201-300.mp3" },
+{ start: 384.545807, end: 388.4908, text: "Cầu Rồng là biểu tượng kiến trúc độc đáo của thành phố Đà Nẵng.", text2: "龙桥是岘港市独特的建筑象征。", text3: "Cầu  - 桥", audioFile: "201-300.mp3" },
+{ start: 388.4908, end: 392.921331, text: "Đường cao tốc giúp rút ngắn thời gian di chuyển giữa các thành phố lớn.", text2: "高速公路缩短了大城市之间的旅行时间。", text3: "Đường cao tốc  - 高速公路", audioFile: "201-300.mp3" },
+{ start: 392.921331, end: 397.321516, text: "Đường quốc lộ là tuyến đường chính kết nối các tỉnh thành trên cả nước.", text2: "国道是连接全国各省市的主要道路。", text3: "Đường quốc lộ  - 国道", audioFile: "201-300.mp3" },
+{ start: 397.321516, end: 401.205817, text: "Đường phố Hà Nội luôn nhộn nhịp với dòng xe cộ qua lại.", text2: "河内的街道总是车水马龙，热闹非凡。", text3: "Đường phố  - 街道", audioFile: "201-300.mp3" },
+{ start: 401.205817, end: 404.908041, text: "Ngã tư này được trang bị đèn giao thông để điều tiết xe cộ.", text2: "这个十字路口安装了交通信号灯以调节车辆。", text3: "Ngã tư  - 十字路口", audioFile: "201-300.mp3" },
+{ start: 404.908041, end: 408.853034, text: "Vạch kẻ đường giúp người đi bộ qua đường một cách an toàn.", text2: "斑马线帮助行人安全过马路。", text3: "Vạch kẻ đường  - 斑马线", audioFile: "201-300.mp3" },
+{ start: 408.853034, end: 413.01045, text: "Cột đèn chiếu sáng giúp người dân đi lại thuận tiện vào ban đêm.", text2: "路灯为夜间行人提供了便利。", text3: "Cột đèn  - 路灯", audioFile: "201-300.mp3" },
+{ start: 413.01045, end: 417.440981, text: "Dù ít được sử dụng, bốt điện thoại vẫn là một biểu tượng của thành phố.", text2: "虽然使用频率不高，但电话亭仍然是城市的象征。", text3: "Bốt điện thoại  - 电话亭", audioFile: "201-300.mp3" },
+{ start: 417.440981, end: 422.50878, text: "Đồ dùng học tập như bút, thước và sách vở là vật dụng không thể thiếu cho học sinh.", text2: "学习用具如笔、尺和书本是学生必备的物品。", text3: "Đồ dùng  - 用具", audioFile: "201-300.mp3" },
+{ start: 422.50878, end: 426.059274, text: "Bút chì là dụng cụ quen thuộc trong việc viết và vẽ.", text2: "铅笔是写字和画画的常用工具。", text3: "Bút chì  - 铅笔", audioFile: "201-300.mp3" },
+{ start: 0, end: 3.345433, text: "Bút bi tiện lợi và có thể viết trên nhiều loại giấy khác nhau.", text2: "圆珠笔方便，可以在多种纸张上书写。", text3: "Bút bi  - 圆珠笔", audioFile: "301-400.mp3" },
+{ start: 3.345433, end: 7.091174, text: "Tẩy giúp xóa bỏ những lỗi sai khi viết bằng bút chì.", text2: "橡皮擦可以擦除铅笔写下的错误。", text3: "Tẩy  - 橡皮擦", audioFile: "301-400.mp3" },
+{ start: 7.091174, end: 10.236452, text: "Thước kẻ giúp đo lường và kẻ đường thẳng chính xác.", text2: "尺子帮助准确测量和划直线。", text3: "Thước kẻ  - 尺子", audioFile: "301-400.mp3" },
+{ start: 10.236452, end: 14.296721, text: "Kéo là dụng cụ cần thiết trong việc cắt giấy và vật liệu khác.", text2: "剪刀是剪纸和其他材料的必需工具。", text3: "Kéo  - 剪刀", audioFile: "301-400.mp3" },
+{ start: 14.296721, end: 18.214023, text: "Dao được sử dụng trong nhiều mục đích như cắt thực phẩm và vật liệu.", text2: "刀用于切割食品和材料等多种用途。", text3: "Dao  - 刀", audioFile: "301-400.mp3" },
+{ start: 18.214023, end: 22.560226, text: "Máy tính xách tay giúp bạn làm việc và học tập linh hoạt ở mọi nơi.", text2: "笔记本电脑帮助你在任何地方灵活工作和学习。", text3: "Máy tính xách tay  - 笔记本电脑", audioFile: "301-400.mp3" },
+{ start: 22.560226, end: 26.906429, text: "Máy in là thiết bị quan trọng trong việc tạo ra các tài liệu bản cứng.", text2: "打印机是制作纸质文件的重要设备。", text3: "Máy in  - 打印机", audioFile: "301-400.mp3" },
+{ start: 26.906429, end: 31.138258, text: "Máy chiếu được sử dụng rộng rãi trong các buổi thuyết trình và hội nghị.", text2: "投影机在演示和会议中广泛使用。", text3: "Máy chiếu  - 投影机", audioFile: "301-400.mp3" },
+{ start: 31.281226, end: 35.026967, text: "Điều hòa không khí giúp điều chỉnh nhiệt độ phòng một cách thoải mái.", text2: "空调帮助调节房间温度，使之更舒适。", text3: "Điều hòa  - 空调", audioFile: "301-400.mp3" },
+{ start: 35.026967, end: 39.287389, text: "Bình nước giữ nhiệt giúp giữ cho nước luôn ở nhiệt độ mong muốn.", text2: "保温水瓶帮助保持水的温度。", text3: "Bình nước  - 水瓶", audioFile: "301-400.mp3" },
+{ start: 39.287389, end: 42.86157, text: "Đồng hồ không chỉ giúp xem giờ mà còn là phụ kiện thời trang.", text2: "手表不仅用来看时间，还是一种时尚配饰。", text3: "Đồng hồ  - 手表", audioFile: "301-400.mp3" },
+{ start: 42.86157, end: 47.26496, text: "Quạt điện là giải pháp đơn giản để làm mát không gian trong những ngày nóng.", text2: "电风扇是在炎热天气中降温的简单解决方案。", text3: "Quạt điện  - 电风扇", audioFile: "301-400.mp3" },
+{ start: 47.26496, end: 51.353822, text: "Bàn phím máy tính là thiết bị đầu vào quan trọng giúp nhập dữ liệu.", text2: "电脑键盘是输入数据的重要设备。", text3: "Bàn phím  - 键盘", audioFile: "301-400.mp3" },
+{ start: 51.353822, end: 55.957366, text: "Chuột máy tính giúp điều khiển con trỏ và thực hiện các thao tác nhanh chóng.", text2: "电脑鼠标帮助控制光标并快速执行操作。", text3: "Chuột máy tính  - 鼠标", audioFile: "301-400.mp3" },
+{ start: 55.957366, end: 60.932625, text: "Loa giúp phát âm thanh rõ ràng và sống động trong các buổi trình diễn âm nhạc.", text2: "音箱在音乐表演中发出清晰而生动的声音。", text3: "Loa  - 音箱", audioFile: "301-400.mp3" },
+{ start: 60.932625, end: 64.621179, text: "Tai nghe giúp bạn thưởng thức âm nhạc mà không làm phiền người khác.", text2: "耳机帮助你享受音乐而不打扰他人。", text3: "Tai nghe  - 耳机", audioFile: "301-400.mp3" },
+{ start: 64.621179, end: 69.19613, text: "Micro được sử dụng trong các buổi phát biểu và hát karaoke.", text2: "麦克风在演讲和卡拉OK中使用。", text3: "Micro  - 麦克风", audioFile: "301-400.mp3" },
+{ start: 69.19613, end: 73.284992, text: "Máy ảnh giúp ghi lại những khoảnh khắc đáng nhớ trong cuộc sống.", text2: "相机帮助记录生活中值得记住的瞬间。", text3: "Máy ảnh  - 相机", audioFile: "301-400.mp3" },
+{ start: 73.284992, end: 77.402448, text: "Điện thoại di động là thiết bị không thể thiếu trong cuộc sống hiện đại.", text2: "手机是现代生活中不可或缺的设备。", text3: "Điện thoại di động  - 手机", audioFile: "301-400.mp3" },
+{ start: 77.402448, end: 82.520674, text: "Máy tính bảng là sự kết hợp giữa tính năng di động và khả năng làm việc đa nhiệm.", text2: "平板电脑结合了移动性和多任务处理能力。", text3: "Máy tính bảng  - 平板电脑", audioFile: "301-400.mp3" },
+{ start: 82.520674, end: 86.180635, text: "Sạc pin giúp duy trì hoạt động của các thiết bị di động.", text2: "充电器帮助维持移动设备的运行。", text3: "Sạc pin  - 充电器", audioFile: "301-400.mp3" },
+{ start: 86.295008, end: 90.555431, text: "Cục phát WiFi giúp kết nối Internet cho nhiều thiết bị trong nhà.", text2: "无线路由器帮助家中的多台设备连接互联网。", text3: "Cục phát WiFi  - 无线路由器", audioFile: "301-400.mp3" },
+{ start: 90.555431, end: 95.930998, text: "USB là thiết bị lưu trữ nhỏ gọn và tiện lợi để mang theo dữ liệu.", text2: "U盘是便携式的小型存储设备。", text3: "USB  - U盘", audioFile: "301-400.mp3" },
+{ start: 95.930998, end: 99.676739, text: "Ổ cứng ngoài giúp mở rộng dung lượng lưu trữ cho máy tính.", text2: "外部硬盘帮助扩展计算机的存储容量。", text3: "Ổ cứng  - 硬盘", audioFile: "301-400.mp3" },
+{ start: 99.676739, end: 103.937162, text: "Tivi màn hình phẳng mang lại hình ảnh sắc nét và chất lượng cao.", text2: "平板电视提供高清晰度的画质。", text3: "Tivi màn hình phẳng  - 平板电视", audioFile: "301-400.mp3" },
+{ start: 103.937162, end: 107.82587, text: "Lò vi sóng giúp hâm nóng thức ăn nhanh chóng và tiện lợi.", text2: "微波炉快速方便地加热食物。", text3: "Lò vi sóng  - 微波炉", audioFile: "301-400.mp3" },
+{ start: 107.82587, end: 111.828952, text: "Nồi cơm điện giúp nấu cơm chín đều và giữ ấm lâu hơn.", text2: "电饭煲帮助均匀煮饭并保持长时间的温度。", text3: "Nồi cơm điện  - 电饭煲", audioFile: "301-400.mp3" },
+{ start: 111.828952, end: 116.289529, text: "Bếp ga là thiết bị phổ biến trong nhà bếp, giúp nấu ăn nhanh chóng.", text2: "煤气炉是厨房里常用的设备，有助于快速做饭。", text3: "Bếp ga  - 煤气炉", audioFile: "301-400.mp3" },
+{ start: 116.289529, end: 120.349798, text: "Lò nướng giúp chế biến các món nướng như bánh mì và thịt nướng.", text2: "烤箱用于制作烤面包和烤肉等食物。", text3: "Lò nướng  - 烤箱", audioFile: "301-400.mp3" },
+{ start: 120.464172, end: 124.35288, text: "Nồi áp suất giúp nấu chín thực phẩm nhanh chóng bằng áp suất cao.", text2: "高压锅通过高压快速煮熟食物。", text3: "Nồi áp suất  - 高压锅", audioFile: "301-400.mp3" },
+{ start: 124.35288, end: 128.041434, text: "Chảo chống dính là dụng cụ nấu ăn không thể thiếu trong nhà bếp.", text2: "不粘锅是厨房里不可缺少的烹饪工具。", text3: "Chảo  - 平底锅", audioFile: "301-400.mp3" },
+{ start: 128.041434, end: 131.50124, text: "Ấm nước siêu tốc giúp đun sôi nước trong thời gian ngắn.", text2: "电热水壶可以在短时间内煮沸水。", text3: "Ấm nước  - 水壶", audioFile: "301-400.mp3" },
+{ start: 131.50124, end: 135.961817, text: "Máy pha cà phê giúp bạn thưởng thức cà phê tươi ngon ngay tại nhà.", text2: "咖啡机让你在家里享受新鲜的咖啡。", text3: "Máy pha cà phê  - 咖啡机", audioFile: "301-400.mp3" },
+{ start: 135.961817, end: 140.250834, text: "Máy xay sinh tố giúp làm các món sinh tố hoa quả bổ dưỡng.", text2: "搅拌机帮助制作营养丰富的果汁。", text3: "Máy xay sinh tố  - 搅拌机", audioFile: "301-400.mp3" },
+{ start: 140.250834, end: 144.110948, text: "Máy ép trái cây giữ nguyên dưỡng chất của trái cây tươi.", text2: "榨汁机保留了新鲜水果的营养成分。", text3: "Máy ép trái cây  - 榨汁机", audioFile: "301-400.mp3" },
+{ start: 144.110948, end: 148.085437, text: "Máy sấy tóc giúp tóc khô nhanh chóng và dễ dàng tạo kiểu.", text2: "吹风机帮助头发快速干燥并容易造型。", text3: "Máy sấy tóc  - 吹风机", audioFile: "301-400.mp3" },
+{ start: 148.085437, end: 152.774761, text: "Máy hút bụi giúp làm sạch nhà cửa một cách hiệu quả và tiết kiệm thời gian.", text2: "吸尘器帮助有效且省时地清洁房屋。", text3: "Máy hút bụi  - 吸尘器", audioFile: "301-400.mp3" },
+{ start: 152.774761, end: 156.74925, text: "Giường tầng tiết kiệm không gian và thích hợp cho các phòng nhỏ.", text2: "双层床节省空间，适合小房间使用。", text3: "Giường tầng  - 双层床", audioFile: "301-400.mp3" },
+{ start: 156.74925, end: 161.23842, text: "Bàn ăn rộng rãi là nơi gia đình quây quần bên những bữa ăn ngon.", text2: "宽敞的餐桌是家庭共进美餐的地方。", text3: "Bàn ăn  - 餐桌", audioFile: "301-400.mp3" },
+{ start: 161.23842, end: 165.527436, text: "Sofa êm ái tạo cảm giác thoải mái khi ngồi hoặc nằm nghỉ ngơi.", text2: "舒适的沙发让人坐或躺着休息时感到放松。", text3: "Sofa  - 沙发", audioFile: "301-400.mp3" },
+{ start: 165.527436, end: 168.95865, text: "Ghế bành là nơi lý tưởng để thư giãn và đọc sách.", text2: "扶手椅是放松和读书的理想地方。", text3: "Ghế bành  - 扶手椅", audioFile: "301-400.mp3" },
+{ start: 168.95865, end: 172.933138, text: "Tủ quần áo lớn giúp cất giữ và sắp xếp quần áo gọn gàng.", text2: "大衣柜帮助整齐地存放和整理衣物。", text3: "Tủ quần áo  - 衣柜", audioFile: "301-400.mp3" },
+{ start: 173.047512, end: 176.85044, text: "Kệ sách trong phòng làm việc chứa đầy sách và tài liệu tham khảo.", text2: "办公室里的书架上装满了书籍和参考资料。", text3: "Kệ sách  - 书架", audioFile: "301-400.mp3" },
+{ start: 176.85044, end: 180.824928, text: "Rèm cửa giúp điều chỉnh ánh sáng và tạo không gian riêng tư.", text2: "窗帘帮助调节光线并创造隐私空间。", text3: "Rèm cửa  - 窗帘", audioFile: "301-400.mp3" },
+{ start: 180.824928, end: 185.142538, text: "Thảm trải sàn mềm mại giúp tạo cảm giác ấm áp và thoải mái.", text2: "柔软的地毯营造出温暖舒适的感觉。", text3: "Thảm trải sàn  - 地毯", audioFile: "301-400.mp3" },
+{ start: 185.142538, end: 189.117026, text: "Gối êm ái giúp bạn có một giấc ngủ ngon và sâu hơn.", text2: "舒适的枕头帮助你睡得更香更深。", text3: "Gối  - 枕头", audioFile: "301-400.mp3" },
+{ start: 189.117026, end: 192.062151, text: "Chăn dày giữ ấm cho bạn trong những đêm lạnh.", text2: "厚重的被子在寒冷的夜晚为你保暖。", text3: "Chăn  - 被子", audioFile: "301-400.mp3" },
+{ start: 192.062151, end: 196.093826, text: "Nệm êm ái giúp hỗ trợ tốt cho lưng và cột sống khi ngủ.", text2: "舒适的床垫有助于睡眠时的背部和脊椎支撑。", text3: "Nệm  - 床垫", audioFile: "301-400.mp3" },
+{ start: 196.2082, end: 199.953941, text: "Gương treo tường giúp bạn chỉnh trang và trang điểm dễ dàng.", text2: "墙镜帮助你轻松整理和化妆。", text3: "Gương  - 镜子", audioFile: "301-400.mp3" },
+{ start: 199.953941, end: 203.957023, text: "Đèn ngủ với ánh sáng dịu nhẹ giúp bạn thư giãn và dễ ngủ hơn.", text2: "床头灯的柔和光线帮助你放松和更容易入睡。", text3: "Đèn ngủ  - 床头灯", audioFile: "301-400.mp3" },
+{ start: 203.957023, end: 208.789314, text: "Đèn bàn là nguồn sáng hoàn hảo cho việc đọc sách và làm việc vào ban đêm.", text2: "台灯是夜间阅读和工作的理想光源。", text3: "Đèn bàn  - 台灯", audioFile: "301-400.mp3" },
+{ start: 208.789314, end: 211.99178, text: "Đèn chùm sang trọng làm nổi bật không gian phòng khách.", text2: "豪华吊灯让客厅空间更加引人注目。", text3: "Đèn chùm  - 吊灯", audioFile: "301-400.mp3" },
+{ start: 211.99178, end: 216.30939, text: "Bình hoa trang trí trên bàn ăn làm cho không gian thêm phần sinh động.", text2: "餐桌上的花瓶装饰让空间更具生气。", text3: "Bình hoa  - 花瓶", audioFile: "301-400.mp3" },
+{ start: 216.30939, end: 220.140911, text: "Khung ảnh chứa đựng những kỷ niệm đẹp của gia đình và bạn bè.", text2: "相框里珍藏着家庭和朋友的美好回忆。", text3: "Khung ảnh  - 相框", audioFile: "301-400.mp3" },
+{ start: 220.140911, end: 224.115399, text: "Đồng hồ treo tường giúp bạn quản lý thời gian một cách hiệu quả.", text2: "挂钟帮助你有效管理时间。", text3: "Đồng hồ treo tường  - 挂钟", audioFile: "301-400.mp3" },
+{ start: 224.115399, end: 228.175668, text: "Lịch bàn giúp bạn theo dõi các sự kiện và kế hoạch hàng ngày.", text2: "台历帮助你跟踪日常事件和计划。", text3: "Lịch bàn  - 台历", audioFile: "301-400.mp3" },
+{ start: 228.175668, end: 233.436862, text: "Lịch treo tường không chỉ giúp bạn quản lý thời gian mà còn là vật trang trí đẹp mắt.", text2: "挂历不仅帮助你管理时间，还是一件漂亮的装饰品。", text3: "Lịch treo tường  - 挂历", audioFile: "301-400.mp3" },
+{ start: 233.579829, end: 237.897438, text: "Thùng rác có nắp đậy giúp giữ cho môi trường sạch sẽ và không có mùi hôi.", text2: "有盖垃圾桶帮助保持环境清洁无异味。", text3: "Thùng rác  - 垃圾桶", audioFile: "301-400.mp3" },
+{ start: 237.897438, end: 241.300058, text: "Chổi giúp quét dọn bụi bẩn trong nhà một cách dễ dàng.", text2: "扫帚帮助轻松清扫屋内的灰尘。", text3: "Chổi  - 扫帚", audioFile: "301-400.mp3" },
+{ start: 241.300058, end: 244.645491, text: "Xẻng được sử dụng để làm vườn và di chuyển đất.", text2: "铲子用于园艺和搬运土壤。", text3: "Xẻng  - 铲子", audioFile: "301-400.mp3" },
+{ start: 244.645491, end: 248.87732, text: "Xô nhựa là dụng cụ đa năng dùng để chứa nước và vận chuyển đồ.", text2: "塑料水桶是用于盛水和搬运物品的多功能工具。", text3: "Xô  - 水桶", audioFile: "301-400.mp3" },
+{ start: 248.87732, end: 252.022599, text: "Móc treo giúp treo quần áo gọn gàng trong tủ.", text2: "衣架帮助把衣服整齐地挂在衣柜里。", text3: "Móc treo  - 衣架", audioFile: "301-400.mp3" },
+{ start: 252.022599, end: 256.340209, text: "Kệ bếp được sử dụng để lưu trữ các dụng cụ nhà bếp và gia vị.", text2: "厨房架用于存放厨房用具和调味品。", text3: "Kệ bếp  - 厨房架", audioFile: "301-400.mp3" },
+{ start: 256.340209, end: 260.686412, text: "Dao cạo là dụng cụ cần thiết để cạo râu một cách nhanh chóng.", text2: "剃刀是快速刮胡子的必需工具。", text3: "Dao cạo  - 剃刀", audioFile: "301-400.mp3" },
+{ start: 260.686412, end: 264.718087, text: "Kem đánh răng giúp giữ cho răng miệng luôn sạch sẽ và thơm mát.", text2: "牙膏帮助保持口腔清洁和清新。", text3: "Kem đánh răng  - 牙膏", audioFile: "301-400.mp3" },
+{ start: 264.718087, end: 268.349454, text: "Bàn chải đánh răng mềm mại bảo vệ men răng và nướu.", text2: "柔软的牙刷保护牙釉质和牙龈。", text3: "Bàn chải đánh răng  - 牙刷", audioFile: "301-400.mp3" },
+{ start: 268.349454, end: 271.694887, text: "Sữa tắm dưỡng ẩm giúp da mịn màng và tươi mới.", text2: "保湿沐浴露让皮肤光滑清爽。", text3: "Sữa tắm  - 沐浴露", audioFile: "301-400.mp3" },
+{ start: 271.694887, end: 275.383441, text: "Dầu gội giúp làm sạch tóc và giữ cho tóc mềm mượt.", text2: "洗发水帮助清洁头发并保持柔顺。", text3: "Dầu gội  - 洗发水", audioFile: "301-400.mp3" },
+{ start: 275.383441, end: 278.929028, text: "Sữa rửa mặt giúp làm sạch da mặt và ngăn ngừa mụn.", text2: "洗面奶帮助清洁面部并预防痘痘。", text3: "Sữa rửa mặt  - 洗面奶", audioFile: "301-400.mp3" },
+{ start: 278.929028, end: 283.189451, text: "Nước hoa tạo ra hương thơm quyến rũ và đặc trưng cho mỗi người.", text2: "香水为每个人带来迷人和独特的香气。", text3: "Nước hoa  - 香水", audioFile: "301-400.mp3" },
+{ start: 283.189451, end: 287.163939, text: "Son môi giúp làm tôn lên vẻ đẹp tự nhiên của đôi môi.", text2: "口红让嘴唇的自然美更加突出。", text3: "Son môi  - 口红", audioFile: "301-400.mp3" },
+{ start: 287.163939, end: 290.709526, text: "Phấn phủ giúp kiềm dầu và giữ lớp trang điểm lâu trôi.", text2: "粉饼帮助控油并保持妆容持久。", text3: "Phấn  - 粉饼", audioFile: "301-400.mp3" },
+{ start: 290.709526, end: 294.283706, text: "Kem chống nắng bảo vệ da khỏi tác hại của tia UV.", text2: "防晒霜保护皮肤免受紫外线的伤害。", text3: "Kem chống nắng  - 防晒霜", audioFile: "301-400.mp3" },
+{ start: 294.283706, end: 297.8007, text: "Băng dính được sử dụng để dán các vật dụng lại với nhau.", text2: "胶带用于将物品粘在一起。", text3: "Băng dính  - 胶带", audioFile: "301-400.mp3" },
+{ start: 297.8007, end: 301.603628, text: "Keo giúp kết dính các vật liệu như giấy, gỗ và nhựa.", text2: "胶水帮助粘合纸、木材和塑料等材料。", text3: "Keo  - 胶水", audioFile: "301-400.mp3" },
+{ start: 301.603628, end: 305.749677, text: "Đèn pin là công cụ cần thiết khi mất điện hoặc đi cắm trại.", text2: "手电筒在停电或露营时是必备的工具。", text3: "Đèn pin  - 手电筒", audioFile: "301-400.mp3" },
+{ start: 305.749677, end: 309.438231, text: "Hộp quẹt dùng để thắp lửa hoặc đốt nến một cách nhanh chóng.", text2: "打火机用于快速点火或点燃蜡烛。", text3: "Hộp quẹt  - 打火机", audioFile: "301-400.mp3" },
+{ start: 309.438231, end: 312.526322, text: "Thuốc lá có hại cho sức khỏe và gây nghiện.", text2: "香烟对健康有害并且容易上瘾。", text3: "Thuốc lá  - 香烟", audioFile: "301-400.mp3" },
+{ start: 312.526322, end: 316.300657, text: "Xăng là nhiên liệu cần thiết để vận hành các loại xe cộ.", text2: "汽油是车辆运行所需的燃料。", text3: "Xăng  - 汽油", audioFile: "301-400.mp3" },
+{ start: 316.300657, end: 320.217958, text: "Dầu được sử dụng để bôi trơn động cơ và các bộ phận máy móc.", text2: "油用于润滑发动机和机械部件。", text3: "Dầu  - 油", audioFile: "301-400.mp3" },
+{ start: 320.217958, end: 324.249634, text: "Găng tay giúp bảo vệ tay khỏi lạnh và các tác nhân gây hại.", text2: "手套保护手部免受寒冷和有害物质的伤害。", text3: "Găng tay  - 手套", audioFile: "301-400.mp3" },
+{ start: 324.249634, end: 328.367089, text: "Khẩu trang giúp bảo vệ hô hấp khỏi bụi bẩn và vi khuẩn.", text2: "口罩保护呼吸系统免受灰尘和细菌的侵害。", text3: "Khẩu trang  - 口罩", audioFile: "301-400.mp3" },
+{ start: 328.367089, end: 332.170017, text: "Nón bảo hiểm giúp bảo vệ đầu trong trường hợp xảy ra tai nạn.", text2: "安全帽在事故发生时保护头部。", text3: "Nón bảo hiểm  - 安全帽", audioFile: "301-400.mp3" },
+{ start: 332.170017, end: 336.716374, text: "Giày thể thao mang lại sự thoải mái và hỗ trợ tốt khi vận động.", text2: "运动鞋在运动时提供舒适感和良好支撑。", text3: "Giày thể thao  - 运动鞋", audioFile: "301-400.mp3" },
+{ start: 336.716374, end: 340.91961, text: "Giày cao gót giúp tôn dáng và tạo sự thanh lịch cho phụ nữ.", text2: "高跟鞋帮助提升身材，增添女性的优雅。", text3: "Giày cao gót  - 高跟鞋", audioFile: "301-400.mp3" },
+{ start: 340.91961, end: 345.866276, text: "Dép lê là loại giày dép đơn giản và thoải mái cho việc đi lại trong nhà.", text2: "拖鞋是室内穿着简单舒适的鞋类。", text3: "Dép lê  - 拖鞋", audioFile: "301-400.mp3" },
+{ start: 345.866276, end: 349.526237, text: "Túi xách là phụ kiện thời trang không thể thiếu của phái đẹp.", text2: "手提包是女性不可或缺的时尚配饰。", text3: "Túi xách  - 手提包", audioFile: "301-400.mp3" },
+{ start: 349.526237, end: 355.216332, text: "Balo là lựa chọn lý tưởng để mang theo đồ dùng cá nhân khi đi học hoặc du lịch.", text2: "背包是上学或旅行时携带个人物品的理想选择。", text3: "Balo  - 背包", audioFile: "301-400.mp3" },
+{ start: 355.216332, end: 360.077217, text: "Vali giúp bảo quản và vận chuyển đồ đạc khi đi công tác hoặc du lịch.", text2: "行李箱帮助在出差或旅行时存放和运输行李。", text3: "Vali  - 行李箱", audioFile: "301-400.mp3" },
+{ start: 360.248777, end: 363.765771, text: "Mũ len giữ ấm đầu và tai trong những ngày đông lạnh giá.", text2: "毛线帽在寒冷的冬天保暖头部和耳朵。", text3: "Mũ len  - 毛线帽", audioFile: "301-400.mp3" },
+{ start: 363.765771, end: 368.026194, text: "Khăn quàng cổ giúp giữ ấm cổ và tạo điểm nhấn cho trang phục.", text2: "围巾帮助保暖颈部并为服装增添亮点。", text3: "Khăn quàng cổ  - 围巾", audioFile: "301-400.mp3" },
+{ start: 368.026194, end: 371.428813, text: "Áo khoác dày giúp giữ ấm cơ thể trong thời tiết lạnh.", text2: "厚外套在寒冷天气下帮助保暖。", text3: "Áo khoác  - 外套", audioFile: "301-400.mp3" },
+{ start: 371.428813, end: 375.603456, text: "Áo thun là trang phục thoải mái và phổ biến trong ngày hè.", text2: "T恤是在夏天穿着舒适且常见的服装。", text3: "Áo thun  - T恤", audioFile: "301-400.mp3" },
+{ start: 375.603456, end: 379.635131, text: "Quần jean là trang phục không bao giờ lỗi mốt và rất dễ kết hợp.", text2: "牛仔裤是永不过时且易于搭配的服装。", text3: "Quần jean  - 牛仔裤", audioFile: "301-400.mp3" },
+{ start: 379.635131, end: 383.237905, text: "Quần short là lựa chọn lý tưởng cho những ngày nắng nóng.", text2: "短裤是在炎热天气下的理想选择。", text3: "Quần short  - 短裤", audioFile: "301-400.mp3" },
+{ start: 383.237905, end: 386.783492, text: "Đầm dài giúp tôn lên vóc dáng và phong cách nữ tính.", text2: "连衣裙帮助提升身材并展现女性气质。", text3: "Đầm  - 连衣裙", audioFile: "301-400.mp3" },
+{ start: 386.783492, end: 390.986728, text: "Váy ngắn là lựa chọn trẻ trung và năng động cho các cô gái.", text2: "短裙是女孩们年轻活力的选择。", text3: "Váy  - 裙子", audioFile: "301-400.mp3" },
+{ start: 390.986728, end: 394.703875, text: "Tạp dề giúp bảo vệ quần áo khỏi bị bẩn khi nấu ăn.", text2: "围裙在做饭时保护衣物免受弄脏。", text3: "Tạp dề  - 围裙", audioFile: "301-400.mp3" },
+{ start: 394.703875, end: 397.963527, text: "Kính râm bảo vệ mắt khỏi ánh sáng mặt trời gay gắt.", text2: "太阳镜保护眼睛免受强烈阳光的伤害。", text3: "Kính râm  - 太阳镜", audioFile: "301-400.mp3" },
+{ start: 397.963527, end: 401.451927, text: "Kính cận giúp cải thiện thị lực cho những người bị cận thị.", text2: "近视眼镜帮助矫正近视者的视力。", text3: "Kính cận  - 近视眼镜", audioFile: "301-400.mp3" },
+{ start: 0, end: 3.20236, text: "Áo mưa giữ cho bạn khô ráo khi phải di chuyển dưới mưa.", text2: "雨衣在雨中行走时保持干燥。", text3: "Áo mưa  - 雨衣", audioFile: "401-500.mp3" },
+{ start: 3.20236, end: 6.374222, text: "Ô dù giúp bạn tránh bị ướt khi trời mưa.", text2: "雨伞帮助你在下雨时保持干燥。", text3: "Ô dù  - 雨伞", audioFile: "401-500.mp3" },
+{ start: 6.374222, end: 9.759574, text: "Áo bơi thoải mái giúp bạn tự tin hơn khi bơi lội.", text2: "舒适的泳衣让你在游泳时更加自信。", text3: "Áo bơi  - 泳衣", audioFile: "401-500.mp3" },
+{ start: 9.759574, end: 13.541409, text: "Kính bơi bảo vệ mắt khỏi nước và hóa chất trong bể bơi.", text2: "游泳镜保护眼睛免受水和游泳池化学物质的伤害。", text3: "Kính bơi  - 游泳镜", audioFile: "401-500.mp3" },
+{ start: 13.541409, end: 17.445239, text: "Xe đẩy là công cụ hữu ích để di chuyển bé khi ra ngoài.", text2: "婴儿车是带孩子外出时的有用工具。", text3: "Xe đẩy  - 婴儿车", audioFile: "401-500.mp3" },
+{ start: 17.445239, end: 22.203031, text: "Giày trượt patin giúp bạn di chuyển nhanh chóng và thú vị trên đường phố.", text2: "滑轮鞋让你在街道上快速且有趣地移动。", text3: "Giày trượt patin  - 滑轮鞋", audioFile: "401-500.mp3" },
+{ start: 22.203031, end: 26.716834, text: "Ván trượt là môn thể thao đường phố phổ biến với nhiều kỹ năng thú vị.", text2: "滑板是一项受欢迎的街头运动，有许多有趣的技巧。", text3: "Ván trượt  - 滑板", audioFile: "401-500.mp3" },
+{ start: 26.716834, end: 31.017147, text: "Kéo cắt tỉa giúp chăm sóc cây cảnh và vườn nhà một cách gọn gàng.", text2: "修剪剪刀帮助整齐地护理盆景和花园。", text3: "Kéo cắt tỉa  - 修剪剪刀", audioFile: "401-500.mp3" },
+{ start: 31.017147, end: 34.82948, text: "Bình tưới cây giúp cung cấp nước cho cây một cách dễ dàng.", text2: "喷壶帮助轻松给植物浇水。", text3: "Bình tưới cây  - 喷壶", audioFile: "401-500.mp3" },
+{ start: 34.82948, end: 38.214832, text: "Phân bón giúp cây trồng phát triển mạnh mẽ và khỏe mạnh.", text2: "肥料帮助植物茁壮成长。", text3: "Phân bón  - 肥料", audioFile: "401-500.mp3" },
+{ start: 38.214832, end: 42.63714, text: "Thuốc trừ sâu giúp bảo vệ cây trồng khỏi các loại côn trùng gây hại.", text2: "杀虫剂保护作物免受有害昆虫的侵害。", text3: "Thuốc trừ sâu  - 杀虫剂", audioFile: "401-500.mp3" },
+{ start: 42.63714, end: 46.815457, text: "Hạt giống tốt là bước đầu tiên để có một vụ mùa bội thu.", text2: "优质种子是丰收的第一步。", text3: "Hạt giống  - 种子", audioFile: "401-500.mp3" },
+{ start: 46.815457, end: 51.11577, text: "Cây giống khỏe mạnh giúp rút ngắn thời gian trồng và đạt năng suất cao.", text2: "健康的苗木有助于缩短种植时间并提高产量。", text3: "Cây giống  - 苗木", audioFile: "401-500.mp3" },
+{ start: 51.11577, end: 55.111095, text: "Lồng chim cần đủ rộng để chim có không gian bay lượn thoải mái.", text2: "鸟笼需要足够宽敞，以便鸟儿自由飞翔。", text3: "Lồng chim  - 鸟笼", audioFile: "401-500.mp3" },
+{ start: 55.111095, end: 58.801434, text: "Chuồng chó là nơi ấm áp và an toàn cho chó nghỉ ngơi.", text2: "狗窝是狗狗温暖安全的休息场所。", text3: "Chuồng chó  - 狗窝", audioFile: "401-500.mp3" },
+{ start: 58.801434, end: 63.345736, text: "Bát ăn của thú cưng nên được làm sạch thường xuyên để đảm bảo vệ sinh.", text2: "宠物的食碗应定期清洗以确保卫生。", text3: "Bát ăn  - 食碗", audioFile: "401-500.mp3" },
+{ start: 63.345736, end: 66.944579, text: "Dây xích giúp kiểm soát và bảo vệ chó khi ra ngoài.", text2: "牵引绳在外出时帮助控制和保护狗狗。", text3: "Dây xích  - 牵引绳", audioFile: "401-500.mp3" },
+{ start: 66.944579, end: 70.970403, text: "Vòng cổ có thể gắn thêm thẻ tên và số điện thoại của chủ nhân.", text2: "项圈可以附上主人的姓名牌和电话号码。", text3: "Vòng cổ  - 项圈", audioFile: "401-500.mp3" },
+{ start: 70.970403, end: 74.538747, text: "Thú nhồi bông là món đồ chơi yêu thích của trẻ em.", text2: "毛绒玩具是孩子们最喜欢的玩具之一。", text3: "Thú nhồi bông  - 毛绒玩具", audioFile: "401-500.mp3" },
+{ start: 74.538747, end: 78.961054, text: "Bóng đá là môn thể thao vua, thu hút hàng triệu người hâm mộ.", text2: "足球是全球最受欢迎的运动，吸引了数百万粉丝。", text3: "Bóng đá  - 足球", audioFile: "401-500.mp3" },
+{ start: 78.961054, end: 83.20037, text: "Bóng rổ là môn thể thao đòi hỏi sự nhanh nhẹn và kỹ năng.", text2: "篮球是一项需要敏捷和技巧的运动。", text3: "Bóng rổ  - 篮球", audioFile: "401-500.mp3" },
+{ start: 83.20037, end: 87.378687, text: "Cầu lông là môn thể thao phổ biến trong các gia đình và cộng đồng.", text2: "羽毛球是一项在家庭和社区中广泛流行的运动。", text3: "Cầu lông  - 羽毛球", audioFile: "401-500.mp3" },
+{ start: 87.378687, end: 91.831493, text: "Vợt cầu lông nhẹ và bền giúp người chơi có những cú đánh mạnh mẽ.", text2: "轻便耐用的羽毛球拍帮助选手发出强力的击球。", text3: "Vợt  - 球拍", audioFile: "401-500.mp3" },
+{ start: 91.831493, end: 96.2538, text: "Bàn bóng bàn là nơi tập luyện lý tưởng cho những ai yêu thích thể thao.", text2: "乒乓球台是爱好运动者的理想训练场所。", text3: "Bàn bóng  - 乒乓球台", audioFile: "401-500.mp3" },
+{ start: 96.2538, end: 100.401619, text: "Bóng bàn là môn thể thao nhanh nhẹn, yêu cầu phản xạ tốt.", text2: "乒乓球是一项需要快速反应的运动。", text3: "Bóng bàn  - 乒乓球", audioFile: "401-500.mp3" },
+{ start: 100.401619, end: 104.488441, text: "Tạ giúp phát triển cơ bắp và tăng cường sức khỏe toàn thân.", text2: "哑铃有助于肌肉发展和增强整体健康。", text3: "Tạ  - 哑铃", audioFile: "401-500.mp3" },
+{ start: 104.488441, end: 108.727756, text: "Máy chạy bộ là công cụ lý tưởng cho việc tập luyện tim mạch trong nhà.", text2: "跑步机是室内心血管锻炼的理想工具。", text3: "Máy chạy bộ  - 跑步机", audioFile: "401-500.mp3" },
+{ start: 108.727756, end: 114.034524, text: "Thảm tập yoga mềm mại và có độ bám tốt, giúp người tập giữ thăng bằng.", text2: "柔软且防滑的瑜伽垫帮助练习者保持平衡。", text3: "Thảm tập yoga  - 瑜伽垫", audioFile: "401-500.mp3" },
+{ start: 114.034524, end: 118.060348, text: "Cầu thang gỗ tạo nên sự ấm cúng và sang trọng cho ngôi nhà.", text2: "木制楼梯为房子增添了温馨和高雅的氛围。", text3: "Cầu thang  - 楼梯", audioFile: "401-500.mp3" },
+{ start: 118.060348, end: 122.60465, text: "Cửa kính mang lại ánh sáng tự nhiên và mở rộng không gian sống.", text2: "玻璃门带来自然光线并扩大生活空间。", text3: "Cửa kính  - 玻璃门", audioFile: "401-500.mp3" },
+{ start: 122.60465, end: 127.789424, text: "Cửa cuốn an toàn và tiện lợi cho việc sử dụng trong các khu vực nhà kho hoặc gara.", text2: "卷帘门在仓库或车库等区域使用既安全又方便。", text3: "Cửa cuốn  - 卷帘门", audioFile: "401-500.mp3" },
+{ start: 127.789424, end: 131.693253, text: "Bảng tên giúp xác định danh tính và vị trí của người làm việc.", text2: "名牌帮助确认工作人员的身份和职位。", text3: "Bảng tên  - 名牌", audioFile: "401-500.mp3" },
+{ start: 131.693253, end: 136.024065, text: "Bảng hiệu là yếu tố quan trọng để thu hút khách hàng đến cửa hàng.", text2: "招牌是吸引顾客到商店的重要因素。", text3: "Bảng hiệu  - 招牌", audioFile: "401-500.mp3" },
+{ start: 136.024065, end: 139.958393, text: "Giấy báo được sử dụng để bọc đồ dễ vỡ hoặc lau kính.", text2: "报纸用于包裹易碎物品或擦拭玻璃。", text3: "Giấy báo  - 报纸", audioFile: "401-500.mp3" },
+{ start: 139.958393, end: 143.770726, text: "Giấy gói quà nhiều màu sắc làm cho món quà thêm phần đặc biệt.", text2: "五彩缤纷的礼品包装纸让礼物更加特别。", text3: "Giấy gói quà  - 礼品包装纸", audioFile: "401-500.mp3" },
+{ start: 143.770726, end: 148.04054, text: "Giấy vệ sinh mềm mại và tiện dụng, cần thiết trong mọi gia đình.", text2: "卫生纸柔软方便，是每个家庭的必需品。", text3: "Giấy vệ sinh  - 卫生纸", audioFile: "401-500.mp3" },
+{ start: 148.04054, end: 152.096863, text: "Khăn giấy dùng một lần tiện lợi cho việc lau chùi và vệ sinh.", text2: "一次性纸巾在清洁和卫生方面非常方便。", text3: "Khăn giấy  - 纸巾", audioFile: "401-500.mp3" },
+{ start: 152.096863, end: 156.458173, text: "Cốc giấy là lựa chọn thân thiện với môi trường trong các buổi tiệc ngoài trời.", text2: "纸杯是在户外聚会时的环保选择。", text3: "Cốc giấy  - 纸杯", audioFile: "401-500.mp3" },
+{ start: 156.458173, end: 160.636491, text: "Đĩa giấy tiện lợi và dễ dàng sử dụng trong các bữa tiệc gia đình.", text2: "纸盘在家庭聚会中使用方便快捷。", text3: "Đĩa giấy  - 纸盘", audioFile: "401-500.mp3" },
+{ start: 160.636491, end: 165.302787, text: "Đèn dầu mang lại ánh sáng ấm áp và cổ điển trong những đêm không điện.", text2: "油灯在无电的夜晚带来温暖的光芒和怀旧的感觉。", text3: "Đèn dầu  - 油灯", audioFile: "401-500.mp3" },
+{ start: 165.302787, end: 169.694595, text: "Đèn lồng thường được treo trong các dịp lễ hội để trang trí và chiếu sáng.", text2: "灯笼通常在节日期间悬挂，用于装饰和照明。", text3: "Đèn lồng  - 灯笼", audioFile: "401-500.mp3" },
+{ start: 169.694595, end: 174.238897, text: "Bình ga là nguồn cung cấp nhiên liệu chính cho các bếp ga trong gia đình.", text2: "煤气罐是家庭煤气炉的主要燃料来源。", text3: "Bình ga  - 煤气罐", audioFile: "401-500.mp3" },
+{ start: 174.238897, end: 177.868239, text: "Bếp từ nấu ăn nhanh và an toàn nhờ công nghệ cảm ứng.", text2: "电磁炉通过感应技术实现快速且安全的烹饪。", text3: "Bếp từ  - 电磁炉", audioFile: "401-500.mp3" },
+{ start: 177.868239, end: 182.687028, text: "Lò sưởi mang lại hơi ấm và không gian ấm cúng trong những ngày đông lạnh.", text2: "壁炉在寒冷的冬天带来温暖和温馨的氛围。", text3: "Lò sưởi  - 壁炉", audioFile: "401-500.mp3" },
+{ start: 182.687028, end: 187.810805, text: "Máy lọc không khí giúp loại bỏ các hạt bụi và vi khuẩn trong không gian sống.", text2: "空气净化器帮助清除生活空间中的灰尘和细菌。", text3: "Máy lọc không khí  - 空气净化器", audioFile: "401-500.mp3" },
+{ start: 187.810805, end: 192.904083, text: "Bình chữa cháy là thiết bị an toàn cần thiết trong các tòa nhà và phương tiện giao thông.", text2: "灭火器是在建筑物和交通工具中的必要安全设备。", text3: "Bình chữa cháy  - 灭火器", audioFile: "401-500.mp3" },
+{ start: 192.904083, end: 197.600878, text: "Máy xông tinh dầu tạo hương thơm dễ chịu và giúp thư giãn tinh thần.", text2: "精油扩散器产生舒适的香气，帮助放松精神。", text3: "Máy xông tinh dầu  - 精油扩散器", audioFile: "401-500.mp3" },
+{ start: 197.600878, end: 201.870691, text: "Máy mát xa giúp giảm đau nhức cơ bắp và cải thiện tuần hoàn máu.", text2: "按摩机帮助缓解肌肉疼痛并改善血液循环。", text3: "Máy mát xa  - 按摩机", audioFile: "401-500.mp3" },
+{ start: 201.870691, end: 207.268956, text: "Máy cạo râu giúp cạo râu sạch sẽ và nhanh chóng mà không gây tổn thương da.", text2: "电动剃须刀帮助快速干净地刮胡子，不伤皮肤。", text3: "Máy cạo râu  - 电动剃须刀", audioFile: "401-500.mp3" },
+{ start: 207.268956, end: 211.599767, text: "Máy làm tóc giúp tạo kiểu tóc xoăn hoặc thẳng dễ dàng và nhanh chóng.", text2: "卷发器帮助轻松快捷地打造卷发或直发造型。", text3: "Máy làm tóc  - 卷发器", audioFile: "401-500.mp3" },
+{ start: 211.599767, end: 215.595092, text: "Bàn là giúp ủi phẳng quần áo, giữ cho chúng luôn gọn gàng.", text2: "熨斗帮助熨平衣物，使其保持整洁。", text3: "Bàn là  - 熨斗", audioFile: "401-500.mp3" },
+{ start: 215.595092, end: 219.956402, text: "Máy hủy giấy giúp tiêu hủy tài liệu quan trọng một cách an toàn.", text2: "碎纸机帮助安全销毁重要文件。", text3: "Máy hủy giấy  - 碎纸机", audioFile: "401-500.mp3" },
+{ start: 219.956402, end: 224.378709, text: "Máy đếm tiền giúp kiểm tra và đếm tiền mặt nhanh chóng và chính xác.", text2: "点钞机帮助快速准确地检查和计算现金。", text3: "Máy đếm tiền  - 点钞机", audioFile: "401-500.mp3" },
+{ start: 224.378709, end: 228.953509, text: "Máy photocopy giúp sao chép tài liệu một cách dễ dàng và tiện lợi.", text2: "复印机帮助轻松快捷地复制文件。", text3: "Máy photocopy  - 复印机", audioFile: "401-500.mp3" },
+{ start: 228.953509, end: 232.948835, text: "Máy hút ẩm giữ cho không gian luôn khô ráo và thoáng mát.", text2: "除湿机保持空间干燥和通风。", text3: "Máy hút ẩm  - 除湿机", audioFile: "401-500.mp3" },
+{ start: 232.948835, end: 237.249147, text: "Cây lau nhà giúp vệ sinh sàn nhà sạch sẽ và tiết kiệm thời gian.", text2: "拖把帮助快速清洁地板，节省时间。", text3: "Cây lau nhà  - 拖把", audioFile: "401-500.mp3" },
+{ start: 237.249147, end: 241.061481, text: "Chảo chống dính giúp nấu ăn mà không bị dính thức ăn vào bề mặt.", text2: "不粘锅帮助烹饪时食物不粘锅。", text3: "Chảo chống dính  - 不粘锅", audioFile: "401-500.mp3" },
+{ start: 241.061481, end: 245.331295, text: "Bộ dao kéo là dụng cụ không thể thiếu trong các bữa ăn hàng ngày.", text2: "刀叉套装是日常餐饮中不可或缺的工具。", text3: "Bộ dao kéo  - 刀叉套装", audioFile: "401-500.mp3" },
+{ start: 245.331295, end: 250.180583, text: "Bình giữ nhiệt giữ cho nước uống luôn ở nhiệt độ mong muốn trong thời gian dài.", text2: "保温杯保持饮料长时间的理想温度。", text3: "Bình giữ nhiệt  - 保温杯", audioFile: "401-500.mp3" },
+{ start: 250.180583, end: 254.236906, text: "Hộp đựng thức ăn giúp bảo quản thực phẩm tươi ngon lâu hơn.", text2: "食品保鲜盒帮助更长时间地保持食物新鲜。", text3: "Hộp đựng thức ăn  - 食品保鲜盒", audioFile: "401-500.mp3" },
+{ start: 254.236906, end: 258.933701, text: "Hộp đựng bút giúp sắp xếp gọn gàng các loại bút viết và dụng cụ văn phòng.", text2: "笔筒帮助整齐地整理各种书写工具和办公用品。", text3: "Hộp đựng bút  - 笔筒", audioFile: "401-500.mp3" },
+{ start: 258.933701, end: 263.142518, text: "Hộp đựng giấy giữ cho giấy vệ sinh luôn sạch sẽ và dễ sử dụng.", text2: "纸巾盒保持卫生纸清洁且易于使用。", text3: "Hộp đựng giấy  - 纸巾盒", audioFile: "401-500.mp3" },
+{ start: 263.142518, end: 266.497371, text: "Đĩa ăn là vật dụng cần thiết cho mỗi bữa ăn gia đình.", text2: "餐盘是每个家庭餐桌上必需的物品。", text3: "Đĩa ăn  - 餐盘", audioFile: "401-500.mp3" },
+{ start: 266.497371, end: 269.821726, text: "Tô lớn được dùng để đựng súp và món canh trong bữa ăn.", text2: "大碗用于盛汤和汤菜。", text3: "Tô  - 碗", audioFile: "401-500.mp3" },
+{ start: 269.821726, end: 274.061041, text: "Muỗng là dụng cụ ăn uống phổ biến trong các bữa ăn ở Việt Nam.", text2: "勺子是越南餐桌上常见的餐具。", text3: "Muỗng  - 勺子", audioFile: "401-500.mp3" },
+{ start: 274.061041, end: 278.66634, text: "Nĩa thường được dùng kèm với dao để cắt và ăn các món ăn phương Tây.", text2: "叉子通常与刀子一起用于切割和食用西式菜肴。", text3: "Nĩa  - 叉子", audioFile: "401-500.mp3" },
+{ start: 278.66634, end: 282.875157, text: "Dao gọt trái cây giúp gọt vỏ và cắt trái cây một cách dễ dàng.", text2: "削果刀帮助轻松剥皮和切割水果。", text3: "Dao gọt trái cây  - 削果刀", audioFile: "401-500.mp3" },
+{ start: 282.875157, end: 287.358461, text: "Máy lọc nước đảm bảo nước uống trong gia đình luôn sạch và an toàn.", text2: "净水器确保家庭饮用水始终清洁安全。", text3: "Máy lọc nước  - 净水器", audioFile: "401-500.mp3" },
+{ start: 287.358461, end: 291.475781, text: "Máy làm đá giúp tạo ra đá viên nhanh chóng cho các loại đồ uống.", text2: "制冰机帮助快速制作饮品所需的冰块。", text3: "Máy làm đá  - 制冰机", audioFile: "401-500.mp3" },
+{ start: 291.475781, end: 295.989584, text: "Máy làm bánh giúp bạn tự làm bánh mì tại nhà dễ dàng và tiện lợi.", text2: "面包机帮助你在家里轻松便捷地制作面包。", text3: "Máy làm bánh  - 面包机", audioFile: "401-500.mp3" },
+{ start: 295.989584, end: 300.594883, text: "Máy làm sữa chua giúp chế biến sữa chua tự nhiên và tươi ngon tại nhà.", text2: "酸奶机帮助你在家里制作天然新鲜的酸奶。", text3: "Máy làm sữa chua  - 酸奶机", audioFile: "401-500.mp3" },
+{ start: 300.594883, end: 304.895196, text: "Máy làm kem cho phép bạn tạo ra các món kem mát lạnh tại nhà.", text2: "制冰机让你在家里制作清凉的冰淇淋。", text3: "Máy làm kem  - 制冰机", audioFile: "401-500.mp3" },
+{ start: 304.895196, end: 309.348001, text: "Lò vi sóng mini phù hợp cho không gian bếp nhỏ và tiết kiệm diện tích.", text2: "小型微波炉适合小厨房，节省空间。", text3: "Lò vi sóng mini  - 小型微波炉", audioFile: "401-500.mp3" },
+{ start: 309.348001, end: 313.648314, text: "Lò nướng bánh giúp nướng bánh mì và các loại bánh ngọt giòn ngon.", text2: "烤面包机帮助烘烤香脆的面包和甜点。", text3: "Lò nướng bánh  - 烤面包机", audioFile: "401-500.mp3" },
+{ start: 313.648314, end: 317.582642, text: "Máy giặt cửa ngang giặt sạch quần áo và bảo vệ sợi vải.", text2: "滚筒洗衣机有效清洗衣物并保护织物纤维。", text3: "Máy giặt cửa ngang  - 滚筒洗衣机", audioFile: "401-500.mp3" },
+{ start: 317.582642, end: 322.157442, text: "Máy giặt cửa trên có thiết kế tiện lợi, phù hợp với nhiều không gian.", text2: "顶开式洗衣机设计方便，适用于多种空间。", text3: "Máy giặt cửa trên  - 顶开式洗衣机", audioFile: "401-500.mp3" },
+{ start: 322.157442, end: 325.481797, text: "Bình đun siêu tốc giúp đun sôi nước trong vài phút.", text2: "快速烧水壶几分钟内煮沸水。", text3: "Bình đun siêu tốc  - 快速烧水壶", audioFile: "401-500.mp3" },
+{ start: 325.481797, end: 330.270088, text: "Nồi lẩu điện giúp nấu lẩu nhanh chóng và giữ nhiệt tốt trong suốt bữa ăn.", text2: "电火锅帮助快速煮火锅，并在整个用餐过程中保持温度。", text3: "Nồi lẩu điện  - 电火锅", audioFile: "401-500.mp3" },
+{ start: 330.270088, end: 334.387409, text: "Máy vắt cam giúp tạo ra nước cam tươi ngon một cách dễ dàng.", text2: "榨橙机帮助轻松制作新鲜美味的橙汁。", text3: "Máy vắt cam  - 榨橙机", audioFile: "401-500.mp3" },
+{ start: 334.387409, end: 338.596225, text: "Bình thủy giúp giữ nước nóng lâu và rất tiện dụng trong mùa đông.", text2: "热水瓶帮助长时间保温，非常适合冬季使用。", text3: "Bình thủy  - 热水瓶", audioFile: "401-500.mp3" },
+{ start: 338.596225, end: 343.110028, text: "Bình lọc nước giúp loại bỏ các tạp chất, mang lại nước sạch cho gia đình.", text2: "滤水壶帮助去除杂质，提供家庭干净的水源。", text3: "Bình lọc nước  - 滤水壶", audioFile: "401-500.mp3" },
+{ start: 343.110028, end: 347.745826, text: "Chai đựng nước dễ dàng mang theo và giúp giữ nước uống trong suốt cả ngày.", text2: "水瓶便于携带，并帮助全天保持饮水。", text3: "Chai đựng nước  - 水瓶", audioFile: "401-500.mp3" },
+{ start: 347.745826, end: 351.893645, text: "Sách giáo khoa là tài liệu học tập cơ bản cho học sinh các cấp.", text2: "教科书是学生各级学习的基本资料。", text3: "Sách giáo khoa  - 教科书", audioFile: "401-500.mp3" },
+{ start: 351.893645, end: 356.407448, text: "Sách tham khảo giúp mở rộng kiến thức và hỗ trợ nghiên cứu chuyên sâu.", text2: "参考书帮助扩展知识并支持深入研究。", text3: "Sách tham khảo  - 参考书", audioFile: "401-500.mp3" },
+{ start: 356.407448, end: 360.768758, text: "Sách truyện giúp trẻ em phát triển trí tưởng tượng và tình yêu đọc sách.", text2: "故事书帮助儿童发展想象力和阅读兴趣。", text3: "Sách truyện  - 故事书", audioFile: "401-500.mp3" },
+{ start: 360.768758, end: 364.977574, text: "Sách báo cung cấp thông tin về các sự kiện và kiến thức thời sự.", text2: "报刊书籍提供有关事件和时事知识的信息。", text3: "Sách báo  - 报刊书籍", audioFile: "401-500.mp3" },
+{ start: 364.977574, end: 369.521876, text: "Sách tiểu thuyết mang đến những câu chuyện hấp dẫn và sâu sắc về cuộc sống.", text2: "小说书带来引人入胜的生活故事。", text3: "Sách tiểu thuyết  - 小说书", audioFile: "401-500.mp3" },
+{ start: 369.521876, end: 374.096676, text: "Sách khoa học cung cấp kiến thức về các lĩnh vực tự nhiên và công nghệ.", text2: "科学书提供关于自然和技术领域的知识。", text3: "Sách khoa học  - 科学书", audioFile: "401-500.mp3" },
+{ start: 374.096676, end: 378.945964, text: "Sách học tiếng Anh là công cụ hữu ích cho người muốn nâng cao trình độ ngôn ngữ.", text2: "英语学习书是提高语言水平的有用工具。", text3: "Sách học tiếng Anh  - 英语学习书", audioFile: "401-500.mp3" },
+{ start: 378.945964, end: 383.256057, text: "Sách dạy nấu ăn hướng dẫn các công thức và kỹ thuật nấu ăn ngon.", text2: "烹饪书指导美味食谱和烹饪技巧。", text3: "Sách dạy nấu ăn  - 烹饪书", audioFile: "401-500.mp3" },
+{ start: 383.256057, end: 387.914273, text: "Sách hướng dẫn giúp người đọc hiểu rõ cách thực hiện một công việc hay dự án.", text2: "指南书帮助读者了解如何执行任务或项目。", text3: "Sách hướng dẫn  - 指南书", audioFile: "401-500.mp3" },
+{ start: 387.914273, end: 392.227437, text: "Từ điển là công cụ tra cứu nghĩa và cách sử dụng của từ ngữ.", text2: "词典是查找单词意义和用法的工具。", text3: "Từ điển  - 词典", audioFile: "401-500.mp3" },
+{ start: 392.227437, end: 396.152415, text: "Bách khoa toàn thư cung cấp kiến thức toàn diện về nhiều lĩnh vực.", text2: "百科全书提供广泛领域的全面知识。", text3: "Bách khoa toàn thư  - 百科全书", audioFile: "401-500.mp3" },
+{ start: 396.152415, end: 401.069421, text: "Tập san là ấn phẩm định kỳ chứa các bài viết chuyên sâu về một lĩnh vực cụ thể.", text2: "期刊是定期出版的包含某一特定领域深度文章的出版物。", text3: "Tập san  - 期刊", audioFile: "401-500.mp3" },
+{ start: 401.069421, end: 405.598242, text: "Bài báo cung cấp thông tin cập nhật và quan điểm về các vấn đề xã hội.", text2: "文章提供有关社会问题的最新信息和观点。", text3: "Bài báo  - 文章", audioFile: "401-500.mp3" },
+{ start: 405.598242, end: 410.699396, text: "Tiểu luận là tác phẩm văn học ngắn gọn, thường tập trung vào một chủ đề cụ thể.", text2: "论文是一种简短的文学作品，通常集中于特定主题。", text3: "Tiểu luận  - 论文", audioFile: "401-500.mp3" },
+{ start: 410.699396, end: 415.357612, text: "Bài thơ mang đến cảm xúc và hình ảnh đẹp đẽ thông qua ngôn từ cô đọng.", text2: "诗歌通过简洁的文字传达美丽的情感和画面。", text3: "Bài thơ  - 诗歌", audioFile: "401-500.mp3" },
+{ start: 415.357612, end: 420.274618, text: "Tản văn là những suy nghĩ, cảm nhận về cuộc sống được thể hiện bằng văn chương.", text2: "随笔是通过文学表达的对生活的思考和感受。", text3: "Tản văn  - 随笔", audioFile: "401-500.mp3" },
+{ start: 420.274618, end: 424.02707, text: "Kịch bản là phần cốt lõi của một vở kịch hoặc bộ phim.", text2: "剧本是戏剧或电影的核心部分。", text3: "Kịch bản  - 剧本", audioFile: "401-500.mp3" },
+{ start: 424.02707, end: 428.201315, text: "Bản nhạc chứa đựng các nốt nhạc và hướng dẫn cho việc biểu diễn âm nhạc.", text2: "乐谱包含音乐表演的音符和指导。", text3: "Bản nhạc  - 乐谱", audioFile: "401-500.mp3" },
+{ start: 0, end: 4.112541, text: "Đĩa CD lưu trữ âm nhạc, phim ảnh hoặc dữ liệu số hóa.", text2: "光盘存储音乐、电影或数字化数据。", text3: "Đĩa CD  - 光盘", audioFile: "501-600.mp3" },
+{ start: 4.112541, end: 8.08327, text: "Đĩa DVD chứa nội dung phim ảnh hoặc chương trình truyền hình.", text2: "DVD光盘存储电影或电视节目的内容。", text3: "Đĩa DVD  - DVD光盘", audioFile: "501-600.mp3" },
+{ start: 8.08327, end: 12.243081, text: "Băng cát-xét là phương tiện lưu trữ âm thanh phổ biến trước đây.", text2: "磁带是以前常用的音频存储介质。", text3: "Băng cát-xét  - 磁带", audioFile: "501-600.mp3" },
+{ start: 12.243081, end: 17.182858, text: "Băng đĩa được sử dụng để ghi lại và xem lại các chương trình truyền hình hoặc phim.", text2: "录像带用于录制和回放电视节目或电影。", text3: "Băng đĩa  - 录像带", audioFile: "501-600.mp3" },
+{ start: 17.182858, end: 20.98814, text: "Đĩa nhạc chứa các bài hát và album của nghệ sĩ.", text2: "音乐光盘存储着艺术家的歌曲和专辑。", text3: "Đĩa nhạc  - 音乐光盘", audioFile: "501-600.mp3" },
+{ start: 20.98814, end: 25.368447, text: "Đĩa phim cung cấp hình ảnh và âm thanh chất lượng cao cho người xem.", text2: "电影光盘为观众提供高质量的画面和音效。", text3: "Đĩa phim  - 电影光盘", audioFile: "501-600.mp3" },
+{ start: 25.368447, end: 29.472107, text: "Bản ghi âm lưu giữ âm thanh của các cuộc phỏng vấn hoặc bài hát.", text2: "录音保存了采访或歌曲的声音。", text3: "Bản ghi âm  - 录音", audioFile: "501-600.mp3" },
+{ start: 29.472107, end: 33.913053, text: "Bản ghi hình giúp lưu trữ lại các khoảnh khắc quan trọng trong cuộc sống.", text2: "录像帮助记录生活中的重要时刻。", text3: "Bản ghi hình  - 录像", audioFile: "501-600.mp3" },
+{ start: 33.913053, end: 38.072927, text: "Bản đồ là công cụ cần thiết để định hướng và khám phá địa lý.", text2: "地图是导航和探索地理的重要工具。", text3: "Bản đồ  - 地图", audioFile: "501-600.mp3" },
+{ start: 38.072927, end: 42.260909, text: "Sơ đồ giúp trực quan hóa các mối quan hệ và cấu trúc phức tạp.", text2: "图表帮助直观展示复杂的关系和结构。", text3: "Sơ đồ  - 图表", audioFile: "501-600.mp3" },
+{ start: 42.260909, end: 46.476997, text: "Truyền thống là những giá trị văn hóa được duy trì qua nhiều thế hệ.", text2: "传统是世代相传的文化价值观。", text3: "Truyền thống  - 传统", audioFile: "501-600.mp3" },
+{ start: 46.476997, end: 51.380067, text: "Văn học phản ánh tâm hồn và tư tưởng của con người qua các tác phẩm nghệ thuật.", text2: "文学通过艺术作品反映人的心灵和思想。", text3: "Văn học  - 文学", audioFile: "501-600.mp3" },
+{ start: 51.492496, end: 55.034011, text: "Tư tưởng là hệ thống quan niệm về thế giới và con người.", text2: "思想是关于世界和人类的观念系统。", text3: "Tư tưởng  - 思想", audioFile: "501-600.mp3" },
+{ start: 55.034011, end: 59.362528, text: "Triết học nghiên cứu về bản chất của tồn tại, nhận thức và đạo đức.", text2: "哲学研究存在、本质、认知和伦理。", text3: "Triết học  - 哲学", audioFile: "501-600.mp3" },
+{ start: 59.362528, end: 63.409974, text: "Đạo đức đề cập đến các nguyên tắc hướng dẫn hành vi con người.", text2: "伦理涉及指导人类行为的原则。", text3: "Đạo đức  - 伦理", audioFile: "501-600.mp3" },
+{ start: 63.409974, end: 68.244422, text: "Nghệ thuật là sự sáng tạo và thể hiện cảm xúc qua các hình thức khác nhau.", text2: "艺术是通过不同形式的创造和情感表达。", text3: "Nghệ thuật  - 艺术", audioFile: "501-600.mp3" },
+{ start: 68.244422, end: 72.825905, text: "Kiến trúc là nghệ thuật và kỹ thuật xây dựng các công trình, không gian sống.", text2: "建筑是建造建筑物和生活空间的艺术与技术。", text3: "Kiến trúc  - 建筑", audioFile: "501-600.mp3" },
+{ start: 72.825905, end: 78.081962, text: "Thiết kế là quá trình sáng tạo và tổ chức các yếu tố để tạo ra sản phẩm.", text2: "设计是创造和组织元素以生成产品的过程。", text3: "Thiết kế  - 设计", audioFile: "501-600.mp3" },
+{ start: 78.081962, end: 82.326158, text: "Khoa học là lĩnh vực nghiên cứu và khám phá các quy luật tự nhiên.", text2: "科学是研究和探索自然规律的领域。", text3: "Khoa học  - 科学", audioFile: "501-600.mp3" },
+{ start: 82.326158, end: 87.048177, text: "Công nghệ áp dụng khoa học để phát triển và cải thiện sản phẩm và quy trình.", text2: "技术应用科学以开发和改进产品和工艺。", text3: "Công nghệ  - 技术", audioFile: "501-600.mp3" },
+{ start: 87.048177, end: 91.404802, text: "Kỹ thuật là lĩnh vực áp dụng khoa học để giải quyết các vấn đề thực tế.", text2: "工程是应用科学解决实际问题的领域。", text3: "Kỹ thuật  - 工程", audioFile: "501-600.mp3" },
+{ start: 91.404802, end: 96.098714, text: "Toán học là ngành khoa học nghiên cứu về số lượng, cấu trúc và không gian.", text2: "数学是研究数量、结构和空间的科学。", text3: "Toán học  - 数学", audioFile: "501-600.mp3" },
+{ start: 96.098714, end: 101.495308, text: "Vật lý nghiên cứu các quy luật và hiện tượng tự nhiên liên quan đến vật chất và năng lượng.", text2: "物理研究与物质和能量相关的自然规律和现象。", text3: "Vật lý  - 物理", audioFile: "501-600.mp3" },
+{ start: 101.495308, end: 105.851933, text: "Hóa học nghiên cứu cấu trúc, tính chất và sự biến đổi của các chất.", text2: "化学研究物质的结构、性质和变化。", text3: "Hóa học  - 化学", audioFile: "501-600.mp3" },
+{ start: 105.851933, end: 110.377201, text: "Sinh học nghiên cứu các hệ thống sống và quá trình sinh học của chúng.", text2: "生物学研究生命系统及其生物过程。", text3: "Sinh học  - 生物学", audioFile: "501-600.mp3" },
+{ start: 110.377201, end: 114.115467, text: "Thiên văn học nghiên cứu về các thiên thể và vũ trụ.", text2: "天文学研究天体和宇宙。", text3: "Thiên văn học  - 天文学", audioFile: "501-600.mp3" },
+{ start: 114.115467, end: 117.881839, text: "Tin học tập trung vào nghiên cứu và ứng dụng công nghệ thông tin.", text2: "计算机科学专注于研究和应用信息技术。", text3: "Tin học  - 计算机科学", audioFile: "501-600.mp3" },
+{ start: 117.881839, end: 122.210357, text: "Y học là ngành khoa học và thực hành chăm sóc sức khỏe và chữa bệnh.", text2: "医学是照护健康和治疗疾病的科学与实践。", text3: "Y học  - 医学", audioFile: "501-600.mp3" },
+{ start: 122.210357, end: 126.79184, text: "Nha khoa chuyên nghiên cứu và điều trị các vấn đề liên quan đến răng miệng.", text2: "牙科专注于研究和治疗与口腔有关的问题。", text3: "Nha khoa  - 牙科", audioFile: "501-600.mp3" },
+{ start: 126.79184, end: 131.457645, text: "Dược học là ngành nghiên cứu về thuốc và cách sử dụng chúng trong điều trị bệnh.", text2: "药学是研究药物及其在疾病治疗中使用的领域。", text3: "Dược học  - 药学", audioFile: "501-600.mp3" },
+{ start: 131.457645, end: 136.179664, text: "Thể thao là hoạt động thể chất giúp tăng cường sức khỏe và gắn kết cộng đồng.", text2: "体育是有助于增强健康和促进社区团结的体力活动。", text3: "Thể thao  - 体育", audioFile: "501-600.mp3" },
+{ start: 136.179664, end: 140.676825, text: "Giáo dục thể chất giúp phát triển thể lực và tinh thần của học sinh.", text2: "体育教育帮助学生发展体力和精神。", text3: "Giáo dục thể chất  - 体育教育", audioFile: "501-600.mp3" },
+{ start: 140.676825, end: 145.455059, text: "Thể hình là hoạt động tập luyện để phát triển cơ bắp và duy trì vóc dáng.", text2: "健身是锻炼肌肉和保持身材的活动。", text3: "Thể hình  - 健身", audioFile: "501-600.mp3" },
+{ start: 145.455059, end: 150.148971, text: "Võ thuật là môn thể thao kết hợp giữa nghệ thuật chiến đấu và rèn luyện thể lực.", text2: "武术是一项结合战斗艺术和体力训练的运动。", text3: "Võ thuật  - 武术", audioFile: "501-600.mp3" },
+{ start: 150.148971, end: 155.882852, text: "Yoga giúp tăng cường sự dẻo dai, giảm căng thẳng và nâng cao sức khỏe tinh thần.", text2: "瑜伽帮助增加柔韧性，减轻压力，提升心理健康。", text3: "Yoga  - 瑜伽", audioFile: "501-600.mp3" },
+{ start: 155.882852, end: 159.761653, text: "Đánh cờ rèn luyện tư duy chiến lược và khả năng phân tích.", text2: "下棋训练战略思维和分析能力。", text3: "Đánh cờ  - 下棋", audioFile: "501-600.mp3" },
+{ start: 159.761653, end: 164.483673, text: "Chơi đàn giúp phát triển khả năng âm nhạc và mang lại niềm vui cho người chơi.", text2: "弹琴帮助发展音乐才能，并带给演奏者乐趣。", text3: "Chơi đàn  - 弹琴", audioFile: "501-600.mp3" },
+{ start: 164.483673, end: 168.362474, text: "Hát là cách biểu đạt cảm xúc qua giọng hát và âm nhạc.", text2: "唱歌通过歌声和音乐表达情感。", text3: "Hát  - 唱歌", audioFile: "501-600.mp3" },
+{ start: 168.362474, end: 173.618531, text: "Nhảy múa là hoạt động kết hợp giữa âm nhạc và chuyển động cơ thể để thể hiện nghệ thuật.", text2: "舞蹈是结合音乐和身体运动的艺术表现形式。", text3: "Nhảy múa  - 舞蹈", audioFile: "501-600.mp3" },
+{ start: 173.618531, end: 177.806513, text: "Vẽ tranh là cách thể hiện sự sáng tạo và cảm xúc qua hình ảnh.", text2: "绘画通过图像表达创意和情感。", text3: "Vẽ tranh  - 绘画", audioFile: "501-600.mp3" },
+{ start: 177.806513, end: 182.893926, text: "Điêu khắc là nghệ thuật tạo hình từ các vật liệu như đá, gỗ hoặc kim loại.", text2: "雕刻是用石头、木材或金属等材料进行造型的艺术。", text3: "Điêu khắc  - 雕刻", audioFile: "501-600.mp3" },
+{ start: 182.893926, end: 186.54787, text: "Nhiếp ảnh là nghệ thuật ghi lại những khoảnh khắc và hình ảnh đẹp.", text2: "摄影是捕捉美丽瞬间和画面的艺术。", text3: "Nhiếp ảnh  - 摄影", audioFile: "501-600.mp3" },
+{ start: 186.54787, end: 190.454779, text: "Làm phim là quá trình sáng tạo ra những câu chuyện và hình ảnh động.", text2: "电影制作是创造故事和动态图像的过程。", text3: "Làm phim  - 电影制作", audioFile: "501-600.mp3" },
+{ start: 190.454779, end: 194.389795, text: "Trồng cây giúp cải thiện môi trường và cung cấp oxy cho cuộc sống.", text2: "种树有助于改善环境并提供氧气。", text3: "Trồng cây  - 种树", audioFile: "501-600.mp3" },
+{ start: 194.389795, end: 198.577776, text: "Nuôi cá là hoạt động giải trí và có thể cung cấp thực phẩm sạch.", text2: "养鱼是一种娱乐活动，同时也能提供清洁食品。", text3: "Nuôi cá  - 养鱼", audioFile: "501-600.mp3" },
+{ start: 198.577776, end: 205.070553, text: "Chăn nuôi là việc nuôi dưỡng và chăm sóc gia súc, gia cầm để cung cấp thịt, sữa, trứng.", text2: "畜牧是养殖和照顾牲畜、家禽，以提供肉类、奶制品和鸡蛋。", text3: "Chăn nuôi  - 畜牧", audioFile: "501-600.mp3" },
+{ start: 205.070553, end: 209.652036, text: "Trồng trọt là hoạt động canh tác cây trồng để sản xuất lương thực và hoa màu.", text2: "种植是为了生产粮食和农作物的农业活动。", text3: "Trồng trọt  - 种植", audioFile: "501-600.mp3" },
+{ start: 209.652036, end: 214.514592, text: "Làm vườn là sở thích của nhiều người, giúp thư giãn và tạo ra không gian xanh.", text2: "园艺是许多人喜欢的爱好，有助于放松并创造绿色空间。", text3: "Làm vườn  - 园艺", audioFile: "501-600.mp3" },
+{ start: 214.514592, end: 219.096075, text: "Điện lực là ngành cung cấp điện năng cho các hoạt động sản xuất và sinh hoạt.", text2: "电力是为生产和生活提供电能的行业。", text3: "Điện lực  - 电力", audioFile: "501-600.mp3" },
+{ start: 219.096075, end: 223.705665, text: "Nước sạch là nguồn tài nguyên quý giá cần được bảo vệ và sử dụng hiệu quả.", text2: "清洁水是需要保护和有效利用的宝贵资源。", text3: "Nước sạch  - 清洁水", audioFile: "501-600.mp3" },
+{ start: 223.705665, end: 228.315255, text: "Giao thông là hệ thống vận chuyển người và hàng hóa từ nơi này đến nơi khác.", text2: "交通是将人和货物从一个地方运输到另一个地方的系统。", text3: "Giao thông  - 交通", audioFile: "501-600.mp3" },
+{ start: 228.315255, end: 233.683741, text: "Hạ tầng bao gồm các công trình và hệ thống cơ sở phục vụ đời sống và kinh tế.", text2: "基础设施包括服务生活和经济的建筑和系统。", text3: "Hạ tầng  - 基础设施", audioFile: "501-600.mp3" },
+{ start: 233.683741, end: 238.321439, text: "Xây dựng là quá trình tạo ra các công trình và cơ sở hạ tầng.", text2: "建筑是创建建筑物和基础设施的过程。", text3: "Xây dựng  - 建筑", audioFile: "501-600.mp3" },
+{ start: 238.321439, end: 242.931029, text: "Công trình là các dự án xây dựng lớn như cầu, đường, tòa nhà.", text2: "工程是桥梁、道路和建筑物等大型建筑项目。", text3: "Công trình  - 工程", audioFile: "501-600.mp3" },
+{ start: 242.931029, end: 247.343869, text: "Đường bộ là mạng lưới giao thông chính kết nối các vùng và thành phố.", text2: "公路是连接各地区和城市的主要交通网络。", text3: "Đường bộ  - 公路", audioFile: "501-600.mp3" },
+{ start: 247.343869, end: 251.812923, text: "Đường thủy là các tuyến đường vận chuyển bằng sông, biển hoặc kênh rạch.", text2: "水路是通过河流、海洋或运河进行运输的路线。", text3: "Đường thủy  - 水路", audioFile: "501-600.mp3" },
+{ start: 251.812923, end: 256.169548, text: "Đường hàng không là các tuyến bay kết nối các sân bay trên toàn cầu.", text2: "航空线路是连接全球机场的飞行路线。", text3: "Đường hàng không  - 航空线路", audioFile: "501-600.mp3" },
+{ start: 256.169548, end: 260.188885, text: "Điện thoại cố định là dịch vụ viễn thông truyền thống qua mạng dây.", text2: "固定电话是通过有线网络提供的传统电信服务。", text3: "Điện thoại cố định  - 固定电话", audioFile: "501-600.mp3" },
+{ start: 260.188885, end: 264.826583, text: "Internet kết nối toàn cầu, cung cấp thông tin và liên lạc tức thời.", text2: "互联网连接全球，提供即时信息和通讯。", text3: "Internet  - 互联网", audioFile: "501-600.mp3" },
+{ start: 264.826583, end: 269.801568, text: "Mạng xã hội là nền tảng kết nối mọi người và chia sẻ thông tin trực tuyến.", text2: "社交网络是连接人们并在线共享信息的平台。", text3: "Mạng xã hội  - 社交网络", audioFile: "501-600.mp3" },
+{ start: 269.942104, end: 274.636016, text: "Email là phương thức liên lạc phổ biến và tiện lợi trong công việc và đời sống.", text2: "电子邮件是工作和生活中常见且便捷的通信方式。", text3: "Email  - 电子邮件", audioFile: "501-600.mp3" },
+{ start: 274.636016, end: 279.245606, text: "Tin nhắn là phương tiện liên lạc nhanh chóng và hiệu quả qua điện thoại.", text2: "短信是通过手机快速且有效的通讯方式。", text3: "Tin nhắn  - 短信", audioFile: "501-600.mp3" },
+{ start: 279.245606, end: 283.995733, text: "Cuộc gọi điện thoại là cách thức liên lạc phổ biến trong công việc và cuộc sống hàng ngày.", text2: "电话是日常生活和工作中常见的通讯方式。", text3: "Cuộc gọi  - 电话", audioFile: "501-600.mp3" },
+{ start: 283.995733, end: 288.380465, text: "Gọi video cho phép mọi người nhìn thấy nhau khi trò chuyện từ xa.", text2: "视频通话让人们在远距离交流时也能看到彼此。", text3: "Gọi video  - 视频通话", audioFile: "501-600.mp3" },
+{ start: 288.380465, end: 293.524093, text: "Chat là hình thức trò chuyện trực tuyến thông qua các ứng dụng hoặc nền tảng mạng xã hội.", text2: "聊天是通过应用程序或社交平台进行的在线交流方式。", text3: "Chat  - 聊天", audioFile: "501-600.mp3" },
+{ start: 293.524093, end: 298.105576, text: "Diễn đàn là nơi thảo luận và chia sẻ thông tin về các chủ đề đa dạng.", text2: "论坛是讨论和分享各种主题信息的地方。", text3: "Diễn đàn  - 论坛", audioFile: "501-600.mp3" },
+{ start: 298.105576, end: 303.277312, text: "Các trang web là nền tảng trực tuyến cung cấp thông tin, dịch vụ và sản phẩm.", text2: "网站是提供信息、服务和产品的在线平台。", text3: "Trang web  - 网站", audioFile: "501-600.mp3" },
+{ start: 303.277312, end: 308.814441, text: "Blog là trang cá nhân hoặc chuyên đề, nơi người dùng chia sẻ ý kiến và trải nghiệm.", text2: "博客是个人或专题页面，用于分享观点和经验。", text3: "Blog  - 博客", audioFile: "501-600.mp3" },
+{ start: 308.814441, end: 314.688858, text: "Podcast là chương trình âm thanh số được phát hành trên Internet, thường dưới dạng chuỗi tập.", text2: "播客是通过互联网发布的数字音频节目，通常以系列形式呈现。", text3: "Podcast  - 播客", audioFile: "501-600.mp3" },
+{ start: 314.688858, end: 320.00113, text: "Livestream là việc phát trực tiếp hình ảnh và âm thanh trên các nền tảng mạng xã hội.", text2: "直播是在社交平台上实时播放视频和音频的活动。", text3: "Livestream  - 直播", audioFile: "501-600.mp3" },
+{ start: 320.00113, end: 324.385862, text: "Truyền hình cáp cung cấp nhiều kênh giải trí và thông tin cho người xem.", text2: "有线电视为观众提供众多娱乐和信息频道。", text3: "Truyền hình cáp  - 有线电视", audioFile: "501-600.mp3" },
+{ start: 324.498291, end: 328.854916, text: "Truyền hình vệ tinh phát sóng các chương trình từ xa thông qua vệ tinh.", text2: "卫星电视通过卫星远程广播节目。", text3: "Truyền hình vệ tinh  - 卫星电视", audioFile: "501-600.mp3" },
+{ start: 328.854916, end: 334.25151, text: "Máy vi tính là công cụ đa năng, hỗ trợ nhiều công việc từ văn phòng đến giải trí.", text2: "计算机是多功能工具，支持从办公到娱乐的多种工作。", text3: "Máy vi tính  - 计算机", audioFile: "501-600.mp3" },
+{ start: 334.25151, end: 339.226494, text: "Laptop là máy tính xách tay tiện lợi cho việc di chuyển và làm việc từ xa.", text2: "笔记本电脑是便携式电脑，方便移动和远程工作。", text3: "Laptop  - 笔记本电脑", audioFile: "501-600.mp3" },
+{ start: 339.226494, end: 344.932268, text: "Máy tính để bàn có hiệu năng mạnh mẽ, thích hợp cho công việc nặng như đồ họa và lập trình.", text2: "台式电脑性能强大，适合用于图形设计和编程等重型工作。", text3: "Máy tính để bàn  - 台式电脑", audioFile: "501-600.mp3" },
+{ start: 345.072804, end: 351.087757, text: "Máy tính bảng là thiết bị di động với màn hình cảm ứng, thường dùng để giải trí và làm việc nhẹ.", text2: "平板电脑是带有触摸屏的移动设备，常用于娱乐和轻量工作。", text3: "Máy tính bảng  - 平板电脑", audioFile: "501-600.mp3" },
+{ start: 351.087757, end: 355.894098, text: "iPad là dòng tablet phổ biến của Apple với nhiều ứng dụng đa dạng.", text2: "iPad是苹果公司广受欢迎的平板电脑，拥有多种应用程序。", text3: "Máy tính bảng  - 平板电脑", audioFile: "501-600.mp3" },
+{ start: 355.894098, end: 361.065834, text: "Điện thoại thông minh là điện thoại di động với các tính năng thông minh, kết nối Internet.", text2: "智能手机是具备智能功能和互联网连接的移动电话。", text3: "Điện thoại thông minh  - 智能手机", audioFile: "501-600.mp3" },
+{ start: 361.178263, end: 367.952112, text: "Thiết bị thông minh bao gồm smartphone, tablet, đồng hồ thông minh và các thiết bị kết nối Internet khác.", text2: "智能设备包括智能手机、平板电脑、智能手表及其他互联网连接设备。", text3: "Thiết bị thông minh  - 智能设备", audioFile: "501-600.mp3" },
+{ start: 367.952112, end: 372.027664, text: "Phần mềm là các chương trình máy tính thực hiện các nhiệm vụ cụ thể.", text2: "软件是执行特定任务的计算机程序。", text3: "Phần mềm  - 软件", audioFile: "501-600.mp3" },
+{ start: 372.027664, end: 378.155046, text: "Ứng dụng là phần mềm được thiết kế để thực hiện các chức năng cụ thể trên smartphone hoặc máy tính.", text2: "应用程序是为智能手机或计算机设计的特定功能软件。", text3: "Ứng dụng  - 应用程序", audioFile: "501-600.mp3" },
+{ start: 378.155046, end: 382.93328, text: "Hệ điều hành quản lý tài nguyên máy tính và cung cấp giao diện cho người dùng.", text2: "操作系统管理计算机资源并为用户提供界面。", text3: "Hệ điều hành  - 操作系统", audioFile: "501-600.mp3" },
+{ start: 382.93328, end: 387.570978, text: "Cơ sở dữ liệu lưu trữ và tổ chức dữ liệu cho các ứng dụng và hệ thống.", text2: "数据库为应用程序和系统存储和组织数据。", text3: "Cơ sở dữ liệu  - 数据库", audioFile: "501-600.mp3" },
+{ start: 387.570978, end: 392.630284, text: "Mạng lưới kết nối các máy tính và thiết bị để chia sẻ tài nguyên và thông tin.", text2: "网络连接计算机和设备以共享资源和信息。", text3: "Mạng lưới  - 网络", audioFile: "501-600.mp3" },
+{ start: 392.630284, end: 397.886341, text: "Máy chủ là thiết bị cung cấp dịch vụ và tài nguyên cho các máy tính khác trong mạng.", text2: "服务器为网络中的其他计算机提供服务和资源。", text3: "Máy chủ  - 服务器", audioFile: "501-600.mp3" },
+{ start: 397.886341, end: 403.170506, text: "Đám mây là hệ thống máy chủ lưu trữ và quản lý dữ liệu từ xa qua Internet.", text2: "云计算是通过互联网远程存储和管理数据的服务器系统。", text3: "Đám mây  - 云计算", audioFile: "501-600.mp3" },
+{ start: 403.170506, end: 407.667667, text: "Bảo mật đảm bảo an toàn cho dữ liệu và thông tin trong hệ thống mạng.", text2: "安全确保网络系统中的数据和信息的安全。", text3: "Bảo mật  - 安全", audioFile: "501-600.mp3" },
+{ start: 407.667667, end: 413.457762, text: "An ninh mạng là các biện pháp bảo vệ hệ thống máy tính khỏi các mối đe dọa từ Internet.", text2: "网络安全是保护计算机系统免受互联网威胁的措施。", text3: "An ninh mạng  - 网络安全", audioFile: "501-600.mp3" },
+{ start: 413.457762, end: 418.517069, text: "Dữ liệu là các thông tin được thu thập và lưu trữ để phân tích và sử dụng.", text2: "数据是收集和存储以供分析和使用的信息。", text3: "Dữ liệu  - 数据", audioFile: "501-600.mp3" },
+{ start: 418.517069, end: 422.929908, text: "Bản quyền bảo vệ quyền lợi của tác giả đối với các tác phẩm sáng tạo.", text2: "版权保护作者对创意作品的权益。", text3: "Bản quyền  - 版权", audioFile: "501-600.mp3" },
+{ start: 422.929908, end: 426.864924, text: "Sáng chế là quyền sở hữu trí tuệ đối với một phát minh mới.", text2: "发明是一项新发明的知识产权。", text3: "Sáng chế  - 发明", audioFile: "501-600.mp3" },
+{ start: 426.864924, end: 430.940477, text: "Phát minh là sự tạo ra những ý tưởng và sản phẩm mới.", text2: "创新是创造新想法和新产品的过程。", text3: "Phát minh  - 创新", audioFile: "501-600.mp3" },
+{ start: 430.940477, end: 436.758679, text: "Phát triển là quá trình mở rộng và nâng cao khả năng hoặc quy mô của một sản phẩm hoặc hệ thống.", text2: "发展是扩展和提升产品或系统能力或规模的过程。", text3: "Phát triển  - 发展", audioFile: "501-600.mp3" },
+{ start: 436.758679, end: 440.721802, text: "Khởi nghiệp là việc bắt đầu một doanh nghiệp mới với ý tưởng sáng tạo.", text2: "创业是以创新理念创办新企业的过程。", text3: "Khởi nghiệp  - 创业", audioFile: "501-600.mp3" },
+{ start: 440.721802, end: 444.937891, text: "Doanh nhân là người khởi xướng và điều hành các hoạt động kinh doanh.", text2: "企业家是发起并经营商业活动的人。", text3: "Doanh nhân  - 企业家", audioFile: "501-600.mp3" },
+{ start: 444.937891, end: 449.688018, text: "Thương hiệu là danh tiếng và nhận diện của một sản phẩm hoặc công ty trên thị trường.", text2: "品牌是产品或公司在市场上的声誉和识别标志。", text3: "Thương hiệu  - 品牌", audioFile: "501-600.mp3" },
+{ start: 449.800447, end: 454.775431, text: "Bản sắc là những đặc điểm riêng biệt tạo nên tính cách và phong cách của một thương hiệu.", text2: "特色是构成品牌个性和风格的独特特征。", text3: "Bản sắc  - 特色", audioFile: "501-600.mp3" },
+{ start: 454.775431, end: 459.525558, text: "Phát hành là quá trình đưa sản phẩm hoặc dịch vụ ra thị trường để tiêu thụ.", text2: "发行是将产品或服务推向市场供消费者使用的过程。", text3: "Phát hành  - 发行", audioFile: "501-600.mp3" },
+{ start: 459.525558, end: 464.444328, text: "Xuất bản là quá trình sản xuất và phát hành sách, tạp chí hoặc báo chí.", text2: "出版是生产和发行书籍、杂志或报纸的过程。", text3: "Xuất bản  - 出版", audioFile: "501-600.mp3" },
+{ start: 464.444328, end: 469.291927, text: "Nhà xuất bản là tổ chức chịu trách nhiệm in ấn và phân phối các ấn phẩm.", text2: "出版社是负责印刷和分发出版物的机构。", text3: "Nhà xuất bản  - 出版社", audioFile: "501-600.mp3" }
+    ];
+
+    let currentIndex = 0;
+    let isFreeMode = true;
+    let correctCount = 0;
+    let isPlaying = false;
+    let correctSentences = new Set();
+    let wrongSentences = new Set();
+    let autoContinue = false;
+    let showAnswer = false;
+    let isAutoPlaying = false;
+
+    init();
+
+    function init() {
+        updateSentenceDisplay();
+        answerInput.focus();
+        autoPlayBtn.style.display = 'inline';
+        const initialAudioFile = sentences[currentIndex].audioFile;
+        if (!initialAudioFile) {
+            console.error("Lỗi: audioFile không được định nghĩa cho câu đầu tiên trong mảng sentences.");
+            return;
+        }
+        audio.src = initialAudioFile;
+        audio.addEventListener('loadeddata', () => {
+            playCurrentSentence();
+        }, { once: true });
+    }
+
+    function updateSentenceDisplay() {
+        sentenceNumber.value = currentIndex + 1;
+        answerInput.value = '';
+        indicator.style.background = '#ffffe0';
+        if (isFreeMode && showAnswer) {
+            indicator.innerHTML = `
+                <div style="font-size: 27px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
+                <div style="font-size: 22px; color: #1d1c1c;">${sentences[currentIndex].text2}</div>
+                <div style="font-size: 22px; font-weight: bold; color: #734A2E;"><strong>${sentences[currentIndex].text3}</strong></div>
+            `;
+        } else {
+            indicator.innerHTML = '';
+            indicator.style.color = '';
+            indicator.style.fontSize = '';
+            indicator.style.fontWeight = '';
+            indicator.style.textAlign = '';
+            indicator.style.lineHeight = '';
+        }
+        if (!isFreeMode) updateWrongSentences();
+    }
+
+    function playCurrentSentence() {
+        if (isPlaying) audio.pause();
+        buttons.forEach(btn => btn.classList.add('disabled'));
+        sentenceNumber.disabled = true;
+        isPlaying = true;
+
+        audio.src = sentences[currentIndex].audioFile;
+        audio.currentTime = sentences[currentIndex].start;
+        audio.play().catch(error => {
+            console.error("Lỗi phát audio:", error);
+            buttons.forEach(btn => btn.classList.remove('disabled'));
+            sentenceNumber.disabled = false;
+            isPlaying = false;
+        });
+
+        audio.ontimeupdate = () => {
+            if (audio.currentTime >= sentences[currentIndex].end) {
+                audio.pause();
+                audio.ontimeupdate = null;
+                buttons.forEach(btn => btn.classList.remove('disabled'));
+                sentenceNumber.disabled = false;
+                isPlaying = false;
+                if (isAutoPlaying) {
+                    setTimeout(() => {
+                        currentIndex = (currentIndex + 1) % sentences.length;
+                        updateSentenceDisplay();
+                        playCurrentSentence();
+                    }, 1000);
+                }
+            }
+        };
+    }
+
+    function moveSentence(direction) {
+        currentIndex = (currentIndex + direction + sentences.length) % sentences.length;
+        updateSentenceDisplay();
+        playCurrentSentence();
+    }
+
+    function removePunctuation(text) {
+        return text.replace(/[,.!?]/g, '');
+    }
+
+    function checkAnswer() {
+        const userAnswer = removePunctuation(answerInput.value.toLowerCase()).trim();
+        const correctAnswer = removePunctuation(sentences[currentIndex].text.toLowerCase()).trim();
+        
+        if (userAnswer === correctAnswer) {
+            indicator.style.background = '#B7D7AA';
+            correctAudio.play();
+            if (!isFreeMode && !correctSentences.has(currentIndex)) {
+                correctCount++;
+                correctSentences.add(currentIndex);
+                wrongSentences.delete(currentIndex);
+                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
+            } else if (isFreeMode && autoContinue) {
+                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
+            } else {
+                correctAudio.onended = null;
+            }
+        } else {
+            indicator.style.background = '#CE6D5E';
+            wrongAudio.play();
+            if (!isFreeMode && !correctSentences.has(currentIndex)) {
+                wrongSentences.add(currentIndex);
+            }
+        }
+        if (!isFreeMode) updateScore();
+    }
+
+    async function updateScore() {
+        scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
+        updateWrongSentences();
+        if (correctCount === sentences.length) {
+            try {
+                const completedCount = await incrementCompletedCount();
+                setTimeout(() => {
+                    alert(`你是第 ${completedCount} 个完成作业的人！`);
+                }, 100);
+            } catch (error) {
+                console.error('Lỗi khi tăng số đếm:', error);
+            }
+        }
+    }
+
+    function updateWrongSentences() {
+        if (isFreeMode || wrongSentences.size === 0) {
+            wrongSentencesDisplay.style.display = 'none';
+        } else {
+            const wrongList = Array.from(wrongSentences).map(index => index + 1).join('/ ');
+            wrongSentencesDisplay.textContent = `解决问题：${wrongList}`;
+            wrongSentencesDisplay.style.display = 'block';
+        }
+    }
+
+    prevBtn.onclick = () => {
+        moveSentence(-1);
+    };
+
+    nextBtn.onclick = () => {
+        moveSentence(1);
+    };
+
+    replayBtn.onclick = () => {
+        playCurrentSentence();
+    };
+
+    freeModeBtn.onclick = () => {
+        isFreeMode = true;
+        freeModeBtn.classList.add('active-mode');
+        testModeBtn.classList.remove('active-mode');
+        scoreDisplay.style.display = 'none';
+        wrongSentencesDisplay.style.display = 'none';
+        autoContinueBtn.style.display = 'inline';
+        showHideBtn.style.display = 'inline';
+        autoPlayBtn.style.display = 'inline';
+        updateSentenceDisplay();
+        if (isAutoPlaying) {
+            answerInput.disabled = true;
+            answerInput.placeholder = "自动播放中...";
+            otherButtons.forEach(btn => btn.classList.add('disabled')); // Vô hiệu hóa các nút khác khi đang ở chế độ Auto Play
+        }
+    };
+
+    testModeBtn.onclick = () => {
+        isFreeMode = false;
+        testModeBtn.classList.add('active-mode');
+        freeModeBtn.classList.remove('active-mode');
+        scoreDisplay.style.display = 'inline';
+        autoContinueBtn.style.display = 'none';
+        showHideBtn.style.display = 'none';
+        autoPlayBtn.style.display = 'none';
+        isAutoPlaying = false;
+        autoPlayBtn.classList.remove('active-mode');
+        answerInput.disabled = false;
+        answerInput.placeholder = "输入所听到的内容";
+        currentIndex = 0;
+        correctCount = 0;
+        correctSentences.clear();
+        wrongSentences.clear();
+        for (let i = 0; i < sentences.length; i++) {
+            wrongSentences.add(i);
+        }
+        updateSentenceDisplay();
+        playCurrentSentence();
+        updateScore();
+    };
+
+    autoContinueBtn.onclick = () => {
+        autoContinue = !autoContinue;
+        autoContinueBtn.classList.toggle('active-mode');
+        if (!autoContinue) {
+            correctAudio.onended = null;
+        }
+    };
+
+    showHideBtn.onclick = () => {
+        showAnswer = !showAnswer;
+        showHideBtn.classList.toggle('active-mode');
+        updateSentenceDisplay();
+    };
+
+    autoPlayBtn.onclick = () => {
+        if (!isFreeMode) return;
+        isAutoPlaying = !isAutoPlaying;
+        autoPlayBtn.classList.toggle('active-mode');
+        if (isAutoPlaying) {
+            answerInput.disabled = true;
+            answerInput.placeholder = "自动播放中...";
+            otherButtons.forEach(btn => btn.classList.add('disabled')); // Vô hiệu hóa tất cả các nút khác
+            sentenceNumber.disabled = true; // Vô hiệu hóa input số câu
+            playCurrentSentence();
+        } else {
+            answerInput.disabled = false;
+            answerInput.placeholder = "输入所听到的内容";
+            otherButtons.forEach(btn => btn.classList.remove('disabled')); // Bật lại tất cả các nút khác
+            sentenceNumber.disabled = false; // Bật lại input số câu
+        }
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && !isPlaying && !isAutoPlaying) { // Thêm điều kiện !isAutoPlaying để phím tắt không hoạt động khi Auto Play bật
+            if (e.key === 'f') {
+                e.preventDefault();
+                playCurrentSentence();
+            } else if (e.key === '8') {
+                e.preventDefault();
+                moveSentence(-1);
+            } else if (e.key === '9') {
+                e.preventDefault();
+                moveSentence(1);
+            }
+        }
+    });
+
+    sentenceNumber.onchange = () => {
+        if (!isPlaying && !isAutoPlaying) { // Thêm điều kiện !isAutoPlaying
+            const num = parseInt(sentenceNumber.value) - 1;
+            if (!isNaN(num) && num >= 0 && num < sentences.length) {
+                currentIndex = num;
+                updateSentenceDisplay();
+                playCurrentSentence();
+            } else {
+                alert(`输入范围： 1 到 ${sentences.length}`);
+                updateSentenceDisplay();
+            }
+        }
+    };
+
+    sentenceNumber.onkeydown = (e) => {
+        if (!isPlaying && !isAutoPlaying) { // Thêm điều kiện !isAutoPlaying
+            if (e.key === 'ArrowLeft') moveSentence(-1);
+            if (e.key === 'ArrowRight') moveSentence(1);
+        }
+    };
+
+    answerInput.onkeypress = (e) => {
+        if (e.key === 'Enter') checkAnswer();
+    };
+    </script>
+</body>
+</html>
