@@ -12,7 +12,7 @@
         padding: 10px;
     }
     #gameContainer {
-        display: block;
+        display: block; /* Hiển thị ngay từ đầu */
     }
     #infoBox { 
         width: 90%;
@@ -26,28 +26,28 @@
         display: flex; 
         align-items: center; 
         justify-content: center; 
-        font-size: clamp(20px, 6vw, 70px);
+        font-size: clamp(20px, 6vw, 80px);
         font-weight: bold;
         padding: 10px;
     }
     #contactBox, #socialBox { 
-        width: 90%;
-        max-width: 750px;
-        height: auto;
-        min-height: 20px;
-        margin: 1px auto;
-        border: 1px solid #ccc; 
-        background: #68838B; 
-        color: #D2B48C; 
-        display: flex; 
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        padding: 3px;
-        font-size: clamp(14px, 3vw, 13px);
-        font-weight: bold;
-        text-align: left;
-    }
+		width: 90%;
+		max-width: 750px;
+		height: auto;
+		min-height: 20px;
+		margin: 1px auto;
+		border: 1px solid #ccc; 
+		background: #68838B; 
+		color: #D2B48C; 
+		display: flex; 
+		flex-direction: column; /* Xếp dọc để <br> xuống dòng */
+		justify-content: flex-start; /* Bắt đầu từ trên */
+		align-items: flex-start; /* Căn trái toàn bộ khối */
+		padding: 3px;
+		font-size: clamp(14px, 3vw, 14px);
+		font-weight: bold;
+		text-align: left; /* Ép từng dòng văn bản căn trái */
+	}
     #shortcutBox { 
         width: 90%;
         max-width: 750px;
@@ -115,7 +115,7 @@
         min-height: 60px;
         margin: 10px auto; 
         border: 3px solid #734A2E; 
-        background: #ffffe0; 
+        background: #ffffff; 
         border-radius: 20px; 
         display: flex;
         flex-direction: column;
@@ -124,20 +124,21 @@
         padding: 15px;
     }
     #answerInput { 
-        width: 90%;
-        max-width: 700px;
-        padding: 15px; 
-        margin: 10px 0; 
-        border: 3px solid #734A2E; 
-        background: #E6EDD9; 
-        color: #000; 
-        font-size: clamp(16px, 4vw, 30px);
-        outline: none;
-    }
-    #answerInput:focus {
-        border: 3px solid #734A2E;
-        outline: none;
-    }
+    width: 90%;
+    max-width: 700px;
+    padding: 15px; 
+    margin: 10px 0; 
+    border: 3px solid #734A2E; 
+    background: #E6EDD9; 
+    color: #000; 
+    font-size: clamp(16px, 4vw, 30px);
+    outline: none; /* Loại bỏ viền đen mặc định khi focus */
+	}
+
+	#answerInput:focus {
+		border: 3px solid #734A2E; /* Giữ nguyên màu viền khi focus */
+		outline: none; /* Đảm bảo không có viền mặc định nào xuất hiện */
+	}
     #score { 
         display: none; 
         margin-left: 10px; 
@@ -155,7 +156,7 @@
         color: #CE6D5E; 
         font-size: clamp(14px, 3.5vw, 20px);
         text-align: left; 
-        border-radius: 5px;
+        border-radius: 5px; 
     }
     @media (max-width: 600px) {
         #infoBox {
@@ -183,11 +184,10 @@
 <body>
     <div id="gameContainer">
         <div id="infoBox">习得越南语 - 名词-600</div>
-        <div id="socialBox">关注我们 - 天天练习 - YouTube: <br>TikTok: <br>Facebook: <br></div>
-        <div id="contactBox">阮玉煌 | Weixin：XiDeYueNanYu</div>
+        <div id="socialBox">关注我们 - 天天练习: <br>YouTube: <br>TikTok: <br>Facebook: <br></div>
+		<div id="contactBox">阮玉煌 | Weixin：XiDeYueNanYu</div>
         <div id="shortcutBox">快键: Ctrl+F (再听一遍) | Ctrl+8 (上一题) | Ctrl+9 (下一题)</div>
         <div id="controls">
-            <button id="autoPlayBtn">自动播放</button>
             <button id="autoContinueBtn">自动继续</button>
             <button id="showHideBtn">显示-隐藏</button>
             <button id="prevBtn">◀</button>
@@ -202,7 +202,7 @@
         <input type="text" id="answerInput" placeholder="输入所听到的内容">
         <div id="wrongSentences"></div>
     </div>
-    <audio id="mainAudio" preload="auto"></audio>
+    <audio id="mainAudio" src="1-100.mp3"></audio>
     <audio id="correctAudio" src="Dung.mp3"></audio>
     <audio id="wrongAudio" src="Sai.mp3"></audio>
 
@@ -244,15 +244,13 @@
     const testModeBtn = document.getElementById('testModeBtn');
     const autoContinueBtn = document.getElementById('autoContinueBtn');
     const showHideBtn = document.getElementById('showHideBtn');
-    const autoPlayBtn = document.getElementById('autoPlayBtn');
     const scoreDisplay = document.getElementById('score');
     const wrongSentencesDisplay = document.getElementById('wrongSentences');
 
-    const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn, autoPlayBtn];
-    const otherButtons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn]; // Không bao gồm autoPlayBtn
+    const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn];
 
     const sentences = [
-        { start: 0, end: 3.089802, text: "Gia đình tôi sống trong một ngôi nhà nhỏ nhưng ấm cúng.", text2: "我们家住在一个虽小但温暖的房子里。", text3: "Nhà  - 房子", audioFile: "1-100.mp3" },
+    { start: 0, end: 3.089802, text: "Gia đình tôi sống trong một ngôi nhà nhỏ nhưng ấm cúng.", text2: "我们家住在一个虽小但温暖的房子里。", text3: "Nhà  - 房子", audioFile: "1-100.mp3" },
 { start: 3.388128, end: 6.541858, text: "Anh ấy có rất nhiều công việc phải hoàn thành trong tuần này.", text2: "这周他有很多工作要完成。", text3: "Công việc  - 工作", audioFile: "1-100.mp3" },
 { start: 6.818874, end: 10.420092, text: "Trường học của tôi rất gần nhà, chỉ mất 10 phút đi bộ.", text2: "我的学校离我家很近，只需步行10分钟。", text3: "Trường học  - 学校", audioFile: "1-100.mp3" },
 { start: 10.654491, end: 13.552513, text: "Cô ấy là một giáo viên dạy toán với nhiều kinh nghiệm.", text2: "她是一位经验丰富的数学教师。", text3: "Giáo viên  - 教师", audioFile: "1-100.mp3" },
@@ -852,7 +850,7 @@
 { start: 454.775431, end: 459.525558, text: "Phát hành là quá trình đưa sản phẩm hoặc dịch vụ ra thị trường để tiêu thụ.", text2: "发行是将产品或服务推向市场供消费者使用的过程。", text3: "Phát hành  - 发行", audioFile: "501-600.mp3" },
 { start: 459.525558, end: 464.444328, text: "Xuất bản là quá trình sản xuất và phát hành sách, tạp chí hoặc báo chí.", text2: "出版是生产和发行书籍、杂志或报纸的过程。", text3: "Xuất bản  - 出版", audioFile: "501-600.mp3" },
 { start: 464.444328, end: 469.291927, text: "Nhà xuất bản là tổ chức chịu trách nhiệm in ấn và phân phối các ấn phẩm.", text2: "出版社是负责印刷和分发出版物的机构。", text3: "Nhà xuất bản  - 出版社", audioFile: "501-600.mp3" }
-    ];
+];
 
     let currentIndex = 0;
     let isFreeMode = true;
@@ -862,32 +860,22 @@
     let wrongSentences = new Set();
     let autoContinue = false;
     let showAnswer = false;
-    let isAutoPlaying = false;
 
+    // Khởi tạo ngay từ đầu, không cần mật khẩu
     init();
 
     function init() {
         updateSentenceDisplay();
         answerInput.focus();
-        autoPlayBtn.style.display = 'inline';
-        const initialAudioFile = sentences[currentIndex].audioFile;
-        if (!initialAudioFile) {
-            console.error("Lỗi: audioFile không được định nghĩa cho câu đầu tiên trong mảng sentences.");
-            return;
-        }
-        audio.src = initialAudioFile;
-        audio.addEventListener('loadeddata', () => {
-            playCurrentSentence();
-        }, { once: true });
     }
 
     function updateSentenceDisplay() {
         sentenceNumber.value = currentIndex + 1;
         answerInput.value = '';
-        indicator.style.background = '#ffffe0';
+        indicator.style.background = '#ffffff';
         if (isFreeMode && showAnswer) {
             indicator.innerHTML = `
-                <div style="font-size: 27px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
+                <div style="font-size: 24px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
                 <div style="font-size: 22px; color: #1d1c1c;">${sentences[currentIndex].text2}</div>
                 <div style="font-size: 22px; font-weight: bold; color: #734A2E;"><strong>${sentences[currentIndex].text3}</strong></div>
             `;
@@ -902,38 +890,31 @@
         if (!isFreeMode) updateWrongSentences();
     }
 
-    function playCurrentSentence() {
-        if (isPlaying) audio.pause();
-        buttons.forEach(btn => btn.classList.add('disabled'));
-        sentenceNumber.disabled = true;
-        isPlaying = true;
+			function playCurrentSentence() {
+			if (isPlaying) audio.pause();
+			buttons.forEach(btn => btn.classList.add('disabled'));
+			sentenceNumber.disabled = true;
+			isPlaying = true;
 
-        audio.src = sentences[currentIndex].audioFile;
-        audio.currentTime = sentences[currentIndex].start;
-        audio.play().catch(error => {
-            console.error("Lỗi phát audio:", error);
-            buttons.forEach(btn => btn.classList.remove('disabled'));
-            sentenceNumber.disabled = false;
-            isPlaying = false;
-        });
+			// Cập nhật nguồn audio dựa trên audioFile của câu hiện tại
+			const currentAudioFile = sentences[currentIndex].audioFile;
+			if (audio.src !== currentAudioFile) {
+				audio.src = currentAudioFile;
+			}
 
-        audio.ontimeupdate = () => {
-            if (audio.currentTime >= sentences[currentIndex].end) {
-                audio.pause();
-                audio.ontimeupdate = null;
-                buttons.forEach(btn => btn.classList.remove('disabled'));
-                sentenceNumber.disabled = false;
-                isPlaying = false;
-                if (isAutoPlaying) {
-                    setTimeout(() => {
-                        currentIndex = (currentIndex + 1) % sentences.length;
-                        updateSentenceDisplay();
-                        playCurrentSentence();
-                    }, 1000);
-                }
-            }
-        };
-    }
+			audio.currentTime = sentences[currentIndex].start;
+			audio.play();
+
+			audio.ontimeupdate = () => {
+				if (audio.currentTime >= sentences[currentIndex].end) {
+					audio.pause();
+					audio.ontimeupdate = null;
+					buttons.forEach(btn => btn.classList.remove('disabled'));
+					sentenceNumber.disabled = false;
+					isPlaying = false;
+				}
+			};
+		}
 
     function moveSentence(direction) {
         currentIndex = (currentIndex + direction + sentences.length) % sentences.length;
@@ -973,19 +954,20 @@
     }
 
     async function updateScore() {
-        scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
-        updateWrongSentences();
-        if (correctCount === sentences.length) {
-            try {
-                const completedCount = await incrementCompletedCount();
-                setTimeout(() => {
-                    alert(`你是第 ${completedCount} 个完成作业的人！`);
-                }, 100);
-            } catch (error) {
-                console.error('Lỗi khi tăng số đếm:', error);
-            }
-        }
-    }
+		scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
+		updateWrongSentences();
+		if (correctCount === sentences.length) {
+			try {
+				const completedCount = await incrementCompletedCount();
+				setTimeout(() => {
+					alert(`你是第 ${completedCount} 个完成作业的人！`);
+				}, 100);
+			} catch (error) {
+				console.error('Lỗi khi tăng số đếm:', error);
+				// Không hiển thị thông báo nếu lỗi xảy ra
+			}
+		}
+	}
 
     function updateWrongSentences() {
         if (isFreeMode || wrongSentences.size === 0) {
@@ -1017,13 +999,7 @@
         wrongSentencesDisplay.style.display = 'none';
         autoContinueBtn.style.display = 'inline';
         showHideBtn.style.display = 'inline';
-        autoPlayBtn.style.display = 'inline';
         updateSentenceDisplay();
-        if (isAutoPlaying) {
-            answerInput.disabled = true;
-            answerInput.placeholder = "自动播放中...";
-            otherButtons.forEach(btn => btn.classList.add('disabled')); // Vô hiệu hóa các nút khác khi đang ở chế độ Auto Play
-        }
     };
 
     testModeBtn.onclick = () => {
@@ -1033,11 +1009,6 @@
         scoreDisplay.style.display = 'inline';
         autoContinueBtn.style.display = 'none';
         showHideBtn.style.display = 'none';
-        autoPlayBtn.style.display = 'none';
-        isAutoPlaying = false;
-        autoPlayBtn.classList.remove('active-mode');
-        answerInput.disabled = false;
-        answerInput.placeholder = "输入所听到的内容";
         currentIndex = 0;
         correctCount = 0;
         correctSentences.clear();
@@ -1064,26 +1035,8 @@
         updateSentenceDisplay();
     };
 
-    autoPlayBtn.onclick = () => {
-        if (!isFreeMode) return;
-        isAutoPlaying = !isAutoPlaying;
-        autoPlayBtn.classList.toggle('active-mode');
-        if (isAutoPlaying) {
-            answerInput.disabled = true;
-            answerInput.placeholder = "自动播放中...";
-            otherButtons.forEach(btn => btn.classList.add('disabled')); // Vô hiệu hóa tất cả các nút khác
-            sentenceNumber.disabled = true; // Vô hiệu hóa input số câu
-            playCurrentSentence();
-        } else {
-            answerInput.disabled = false;
-            answerInput.placeholder = "输入所听到的内容";
-            otherButtons.forEach(btn => btn.classList.remove('disabled')); // Bật lại tất cả các nút khác
-            sentenceNumber.disabled = false; // Bật lại input số câu
-        }
-    };
-
     document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && !isPlaying && !isAutoPlaying) { // Thêm điều kiện !isAutoPlaying để phím tắt không hoạt động khi Auto Play bật
+        if (e.ctrlKey && !isPlaying) {
             if (e.key === 'f') {
                 e.preventDefault();
                 playCurrentSentence();
@@ -1098,7 +1051,7 @@
     });
 
     sentenceNumber.onchange = () => {
-        if (!isPlaying && !isAutoPlaying) { // Thêm điều kiện !isAutoPlaying
+        if (!isPlaying) {
             const num = parseInt(sentenceNumber.value) - 1;
             if (!isNaN(num) && num >= 0 && num < sentences.length) {
                 currentIndex = num;
@@ -1112,7 +1065,7 @@
     };
 
     sentenceNumber.onkeydown = (e) => {
-        if (!isPlaying && !isAutoPlaying) { // Thêm điều kiện !isAutoPlaying
+        if (!isPlaying) {
             if (e.key === 'ArrowLeft') moveSentence(-1);
             if (e.key === 'ArrowRight') moveSentence(1);
         }
